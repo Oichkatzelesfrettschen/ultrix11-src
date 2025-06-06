@@ -106,6 +106,7 @@ This toolchain produces PDP-11 binaries that can be transferred to the emulator 
 
 ## Automated setup
 
-Run `scripts/setup_lab.sh` to install packages and download media automatically.
+Run `scripts/setup_lab.sh` to install packages, including build dependencies for
+the cross toolchain, and download the OS media automatically.
 
 

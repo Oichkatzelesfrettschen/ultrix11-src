@@ -12,9 +12,10 @@ sudo apt update
 
 # Base build stack
 sudo apt install -y \
-    build-essential cmake git pkg-config \
-    libreadline-dev libpcap-dev zlib1g-dev \
-    flex bison
+	build-essential cmake git pkg-config \
+	libreadline-dev libpcap-dev zlib1g-dev \
+	flex bison \
+	libgmp-dev libmpfr-dev texinfo file
 
 # SIMH emulator
 sudo apt install -y simh
@@ -28,4 +29,3 @@ curl -L -O https://www.tuhs.org/Archive/Distributions/UCB/2.11BSD-pl195.tar
 
 # ULTRIX-11 tape (may fail if the mirror is unreachable)
 curl -L -O https://www.tuhs.org/Archive/Distributions/DEC/Ultrix-11/3.1/ultrix-11.tap.gz || true
-
