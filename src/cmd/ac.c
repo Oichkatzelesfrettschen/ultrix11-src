@@ -17,15 +17,18 @@ static char Sccsid[] = "@(#)ac.c 3.0 4/21/86";
 #include <sys/types.h>
 #include <sys/timeb.h>
 
-#define	TSIZE	33
-#define	USIZE	200
+/** Number of terminal slots to track. */
+#define TSIZE   33
 struct  utmp ibuf;
-
+/** Maximum number of user entries. */
+#define USIZE   200
+/** Accounting entry for a single user. */
 struct ubuf {
 	char	uname[8];
 	long	utime;
 } ubuf[USIZE];
 
+/** Per-terminal accounting totals. */
 struct tbuf {
 	struct	ubuf	*userp;
 	long	ttime;
@@ -40,6 +43,9 @@ long	day	= 86400L;
 int	pcount;
 char	**pptr;
 
+/**
+ * Program entry point.
+ */
 main(argc, argv) 
 char **argv;
 {
@@ -97,6 +103,9 @@ char **argv;
 	exit(0);
 }
 
+/**
+ * Process accounting records from the wtmp file.
+ */
 loop()
 {
 	register i;
@@ -142,6 +151,9 @@ loop()
 	update(tp, 0);
 }
 
+/**
+ * Display the accounting totals.
+ */
 print()
 {
 	int i;
@@ -165,6 +177,9 @@ print()
 	}
 }
 
+/**
+ * Update all per-terminal totals.
+ */
 upall(f)
 {
 	register struct tbuf *tp;
@@ -173,6 +188,9 @@ upall(f)
 		update(tp, f);
 }
 
+/**
+ * Update totals for a specific terminal.
+ */
 update(tp, f)
 struct tbuf *tp;
 {
@@ -208,6 +226,9 @@ struct tbuf *tp;
 	tp->userp = up;
 }
 
+/**
+ * Determine whether user index i is in the list of interest.
+ */
 among(i)
 {
 	register j, k;
@@ -228,6 +249,9 @@ among(i)
 	return(0);
 }
 
+/**
+ * Roll accounting totals over to a new day boundary.
+ */
 newday()
 {
 	long ttime;
@@ -245,6 +269,9 @@ newday()
 		midnight += day;
 }
 
+/**
+ * Print the date header when listing by day.
+ */
 pdate()
 {
 	long x;

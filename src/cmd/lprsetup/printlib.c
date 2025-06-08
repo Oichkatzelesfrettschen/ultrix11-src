@@ -10,29 +10,31 @@
 /* Based on: (2.9BSD)	printcap.c	1.3	81/06/01	*/
 
 #ifndef BUFSIZ
-#define	BUFSIZ	512
+/** Buffer size used when none is defined. */
+#define BUFSIZ  512
 #endif
-
-#define MAXHOP	32	/* max number of tc= indirections */
+/** Maximum number of tc= indirections. */
+#define MAXHOP  32      /* max number of tc= indirections */
 
 #include	<ctype.h>
 #include	<whoami.h>
 #include	"local/uparm.h"
-/*
+/**
  * termcap - routines for dealing with the terminal capability data base
  *
- * TODO:	Should use a "last" pointer in tbuf, so that searching
- *		for capabilities alphabetically would not be a n**2/2
- *		process when large numbers of capabilities are given.
- * Note:	If we add a last pointer now we will screw up the
- *		tc capability. We really should compile termcap.
+ * @todo Should use a "last" pointer in tbuf, so that searching
+ *       for capabilities alphabetically would not be a n**2/2
+ *       process when large numbers of capabilities are given.
+ *       If we add a last pointer now we will screw up the tc capability.
+ *       We really should compile termcap.
  *
  * Essentially all the work here is scanning and decoding escapes
  * in string capabilities.  We don't use stdio because the editor
  * doesn't, and because living w/o it is not hard.
  */
 
-#define	PRINTCAP
+/** Compile in support for /etc/printcap. */
+#define PRINTCAP
 
 #ifdef	PRINTCAP
 #define	tgetent		pgetent
@@ -114,13 +116,13 @@ tgetent(bp, name)
 		}
 	}
 }
-
-/*
- * tnchktc: check the last entry, see if it's tc=xxx. If so,
- * recursively find xxx and append that entry (minus the names)
- * to take the place of the tc=xxx entry. This allows termcap
- * entries to say "like an HP2621 but doesn't turn on the labels".
- * Note that this works because of the left to right scan.
+/**
+ * Resolve tc= entries by recursively merging capabilities.
+ *
+ * This checks the last entry for a `tc=` field. If present,
+ * it recursively reads the referenced entry and appends its
+ * capabilities, replacing the `tc=` directive. This allows
+ * entries to reference other terminals with modifications.
  */
 tnchktc()
 {
@@ -168,6 +170,8 @@ tnchktc()
  * entry is a sequence of names separated by |'s, so we compare
  * against each such name.  The normal : terminator after the last
  * name (before the first field) stops us.
+/**
+ * Match a capability name against the names in the termcap entry.
  */
 tnamatch(np)
 	char *np;
