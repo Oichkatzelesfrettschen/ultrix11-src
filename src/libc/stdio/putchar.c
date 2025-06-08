@@ -17,9 +17,14 @@
 #include <stdio.h>
 #undef putchar
 
-int
-putchar(c)
+/**
+ * @brief Output a character to stdout.
+ *
+ * @param c Character to write.
+ * @return The character written or EOF on error.
+ */
+int putchar(c)
 register char c;
 {
-	return(putc(c, stdout));
+  return (putc(c, stdout));
 }

@@ -20,27 +20,33 @@
 extern int _doprnt();
 
 /*VARARGS2*/
-int
-fprintf(iop, format, va_alist)
+/**
+ * @brief Print formatted output to a stream.
+ *
+ * @param iop    Destination stream.
+ * @param format Format string.
+ * @param ...    Arguments referenced by @p format.
+ * @return Number of characters printed or EOF on error.
+ */
+int fprintf(iop, format, va_alist)
 FILE *iop;
 char *format;
-va_dcl
-{
-	register int count;
-	va_list ap;
+va_dcl {
+  register int count;
+  va_list ap;
 
-	va_start(ap);
-	if (!(iop->_flag | _IOWRT)) {
-		/* if no write flag */
-		if (iop->_flag | _IORW) {
-			/* if ok, cause read-write */
-			iop->_flag |= _IOWRT;
-		} else {
-			/* else error */
-			return EOF;
-		}
-	}
-	count = _doprnt(format, ap, iop);
-	va_end(ap);
-	return(ferror(iop)? EOF: 0);	/* SYSV: used to return count, not 0 */
+  va_start(ap);
+  if (!(iop->_flag | _IOWRT)) {
+    /* if no write flag */
+    if (iop->_flag | _IORW) {
+      /* if ok, cause read-write */
+      iop->_flag |= _IOWRT;
+    } else {
+      /* else error */
+      return EOF;
+    }
+  }
+  count = _doprnt(format, ap, iop);
+  va_end(ap);
+  return (ferror(iop) ? EOF : 0); /* SYSV: used to return count, not 0 */
 }
