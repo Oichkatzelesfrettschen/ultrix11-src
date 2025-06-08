@@ -3,6 +3,10 @@
  *   All Rights Reserved.
  *   Reference "/usr/src/COPYRIGHT" for applicable restrictions.
  **********************************************************************/
+/**
+ * @file ac.c
+ * @brief User accounting report tool.
+ */
 
 /**
  * @file ac.c
@@ -21,16 +25,16 @@
 #include <time.h>
 #include <utmp.h>
 
-#define TSIZE   33    /**< Number of terminal slots to track. */
-#define USIZE  200    /**< Maximum number of users tracked. */
+#define TSIZE 33  /**< Number of terminal slots to track. */
+#define USIZE 200 /**< Maximum number of users tracked. */
 
 /**
  * @struct ubuf
  * @brief Holds per-user accounting info.
  */
 struct ubuf {
-  char    uname[8];   /**< User login name (null-terminated). */
-  time_t  utime;      /**< Cumulative time (in seconds) used by the user. */
+  char uname[8]; /**< User login name (null-terminated). */
+  time_t utime;  /**< Cumulative time (in seconds) used by the user. */
 };
 
 /**
@@ -39,31 +43,31 @@ struct ubuf {
  */
 struct tbuf {
   struct ubuf *userp; /**< Pointer to the user's ubuf entry. */
-  time_t      ttime;  /**< Last timestamp recorded for the terminal. */
+  time_t ttime;       /**< Last timestamp recorded for the terminal. */
 };
 
-static struct utmp    ibuf;        /**< Current wtmp record buffer. */
-static struct ubuf    ubuf[USIZE]; /**< Array of per-user entries. */
-static struct tbuf    tbuf[TSIZE]; /**< Array of per-terminal entries. */
+static struct utmp ibuf;        /**< Current wtmp record buffer. */
+static struct ubuf ubuf[USIZE]; /**< Array of per-user entries. */
+static struct tbuf tbuf[TSIZE]; /**< Array of per-terminal entries. */
 
-static char   *wtmp;     /**< Path to wtmp file. */
-static int     pflag;    /**< Print per-user details if non-zero. */
-static int     byday;    /**< Split report by day if non-zero. */
-static int     pcount;   /**< Number of specific users to report. */
-static char  **pptr;     /**< List of user names to include. */
-static time_t  dtime;    /**< Timestamp of '|' record (begin day marker). */
-static time_t  midnight; /**< Timestamp of next midnight boundary. */
-static time_t  lastime;  /**< Timestamp of last processed record. */
+static char *wtmp;      /**< Path to wtmp file. */
+static int pflag;       /**< Print per-user details if non-zero. */
+static int byday;       /**< Split report by day if non-zero. */
+static int pcount;      /**< Number of specific users to report. */
+static char **pptr;     /**< List of user names to include. */
+static time_t dtime;    /**< Timestamp of '|' record (begin day marker). */
+static time_t midnight; /**< Timestamp of next midnight boundary. */
+static time_t lastime;  /**< Timestamp of last processed record. */
 static const time_t day = 86400L; /**< Number of seconds in a day. */
 
 /* Function prototypes */
-static void    loop(void);
-static void    print_totals(void);
-static void    upall(int use_midnight);
-static void    update_term(struct tbuf *tp, int use_midnight);
-static int     among(int idx);
-static void    newday(void);
-static void    print_date(void);
+static void loop(void);
+static void print_totals(void);
+static void upall(int use_midnight);
+static void update_term(struct tbuf *tp, int use_midnight);
+static int among(int idx);
+static void newday(void);
+static void print_date(void);
 
 /**
  * @brief Program entry point.
@@ -72,8 +76,7 @@ static void    print_date(void);
  * @param argv Argument vector.
  * @return EXIT_SUCCESS on success, EXIT_FAILURE on error.
  */
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
   int idx = 1;
   FILE *wf;
 
@@ -92,7 +95,7 @@ int main(int argc, char **argv)
     idx++;
   }
   pcount = argc - idx;
-  pptr   = &argv[idx];
+  pptr = &argv[idx];
 
   wf = fopen(wtmp, "r");
   if (wf == NULL) {
@@ -105,7 +108,10 @@ int main(int argc, char **argv)
     for (int i = 0; i < (int)sizeof(ibuf.ut_name); i++) {
       int c = ibuf.ut_name[i];
       if (isdigit(c) || isalpha(c)) {
-        if (fl) { fl = -1; break; }
+        if (fl) {
+          fl = -1;
+          break;
+        }
       } else if (c == ' ' || c == '\0') {
         fl++;
         ibuf.ut_name[i] = '\0';
@@ -131,8 +137,7 @@ int main(int argc, char **argv)
 /**
  * @brief Process a single wtmp log entry.
  */
-static void loop(void)
-{
+static void loop(void) {
   if (ibuf.ut_line[0] == '|') {
     dtime = ibuf.ut_time;
     return;
@@ -179,8 +184,7 @@ static void loop(void)
 /**
  * @brief Display the accumulated accounting totals.
  */
-static void print_totals(void)
-{
+static void print_totals(void) {
   time_t total_time = 0;
   for (int i = 0; i < USIZE; i++) {
     if (!among(i))
@@ -203,8 +207,7 @@ static void print_totals(void)
  *
  * @param use_midnight If non-zero, use the midnight boundary time.
  */
-static void upall(int use_midnight)
-{
+static void upall(int use_midnight) {
   for (int i = 0; i < TSIZE; i++)
     update_term(&tbuf[i], use_midnight);
 }
@@ -215,8 +218,7 @@ static void upall(int use_midnight)
  * @param tp             Terminal buffer to update.
  * @param use_midnight   If non-zero, use the midnight boundary time.
  */
-static void update_term(struct tbuf *tp, int use_midnight)
-{
+static void update_term(struct tbuf *tp, int use_midnight) {
   time_t now = use_midnight ? midnight : ibuf.ut_time;
   if (tp->userp) {
     time_t delta = now - tp->ttime;
@@ -256,8 +258,7 @@ static void update_term(struct tbuf *tp, int use_midnight)
  * @param idx Index of user buffer.
  * @return 1 if listed or list empty, 0 otherwise.
  */
-static int among(int idx)
-{
+static int among(int idx) {
   if (pcount == 0)
     return 1;
   for (int j = 0; j < pcount; j++) {
@@ -270,8 +271,7 @@ static int among(int idx)
 /**
  * @brief Advance to the next midnight boundary.
  */
-static void newday(void)
-{
+static void newday(void) {
   struct timeb tb;
   if (midnight == 0) {
     ftime(&tb);
@@ -286,8 +286,7 @@ static void newday(void)
 /**
  * @brief Print the date header when reporting by day.
  */
-static void print_date(void)
-{
+static void print_date(void) {
   if (!byday)
     return;
   time_t x = midnight - 1;
