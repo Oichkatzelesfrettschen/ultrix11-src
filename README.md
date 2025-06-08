@@ -1,4 +1,5 @@
 # ultrix11-src
+
 The Ultrix-11 3.1 source code.
 
 ## Building
@@ -11,3 +12,10 @@ userland utilities and the kernel on an x86_64 host. The main targets are:
 - `make clean` – remove build products
 
 Set `CC`, `CFLAGS`, `AS`, and `LDFLAGS` to override the default toolchain.
+
+## License
+
+The distribution includes the original Digital Equipment Corporation
+licensing terms. These terms are reproduced in the [COPYRIGHT](COPYRIGHT)
+file at the repository root. The source is offered solely for historical
+study and personal analysis; no additional rights are claimed.
