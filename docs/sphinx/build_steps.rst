@@ -28,6 +28,14 @@ The ``make`` target invokes ``userland`` and ``kernel`` builds.  To
 build only user programs or the kernel separately, use
 ``make userland`` or ``make kernel``.
 
+An ``ARCH`` variable controls the target architecture.  It defaults to
+``pdp11``.  To build the experimental 64-bit kernel, pass
+``ARCH=x86_64_v1`` on the command line:
+
+.. code-block:: bash
+
+   make ARCH=x86_64_v1
+
 Cleaning
 --------
 
