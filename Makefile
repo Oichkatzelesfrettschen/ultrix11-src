@@ -7,8 +7,9 @@ CFLAGS ?= -O2
 AS ?= as
 # Additional linker flags
 LDFLAGS ?=
+ARCH ?= x86_64_v1
 
-export CC CFLAGS AS LDFLAGS
+export CC CFLAGS AS LDFLAGS ARCH
 
 .PHONY: all userland kernel clean docs
 
@@ -20,11 +21,11 @@ userland:
 
 # Build kernel sources under sys/
 kernel:
-	$(MAKE) -C sys
+	$(MAKE) -C sys ARCH=$(ARCH)
 
 clean:
 	$(MAKE) -C src clean
-	$(MAKE) -C sys clean
+	$(MAKE) -C sys clean ARCH=$(ARCH)
 
 # Build project documentation using Doxygen and Sphinx
 docs:
