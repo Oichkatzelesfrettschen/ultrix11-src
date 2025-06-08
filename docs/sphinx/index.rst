@@ -9,6 +9,7 @@ Ultrix-11 Documentation
    repository_overview
    build_steps
    build_workflow
+   arch_x86_64_v1
    emulator_setup
    emulator_lab
    usage

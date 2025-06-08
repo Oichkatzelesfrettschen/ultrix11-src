@@ -27,6 +27,15 @@ All contributions should meet a PhD-level engineering standard for clarity and c
 - Formatting should only affect code, not surrounding comments.
 - All code should compile cleanly with `-Wall -Wextra` and no warnings.
 
+## Build System
+
+All architectures **must** provide a recursive CMake build that mirrors the
+traditional Makefile targets. The CMake configuration should launch via the
+existing top-level `make` entry points so legacy workflows continue to
+function. Maintain the CMake rules in parallel with the historical Makefiles
+and keep them consistent across platforms, including the `arch_x86_64_v1`
+port.
+
 ## Review Expectations
 
 - Pull requests will be reviewed for thorough Doxygen coverage and modern
