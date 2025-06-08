@@ -3,12 +3,14 @@
 CC ?= cc
 # Compiler flags for C sources
 CFLAGS ?= -O2
+# Target architecture (defaults to PDP-11 for historical builds)
+ARCH ?= pdp11
 # Assembler used for assembly sources
 AS ?= as
 # Additional linker flags
 LDFLAGS ?=
 
-export CC CFLAGS AS LDFLAGS
+export CC CFLAGS AS LDFLAGS ARCH
 
 .PHONY: all userland kernel clean docs
 
@@ -16,15 +18,17 @@ all: userland kernel
 
 # Build userland programs under src/
 userland:
-	$(MAKE) -C src
+	# Propagate target architecture to the userland build
+	$(MAKE) -C src ARCH=$(ARCH)
 
 # Build kernel sources under sys/
 kernel:
-	$(MAKE) -C sys
+	# Propagate target architecture to the kernel build
+	$(MAKE) -C sys ARCH=$(ARCH)
 
 clean:
-	$(MAKE) -C src clean
-	$(MAKE) -C sys clean
+	$(MAKE) -C src clean ARCH=$(ARCH)
+	$(MAKE) -C sys clean ARCH=$(ARCH)
 
 # Build project documentation using Doxygen and Sphinx
 docs:
