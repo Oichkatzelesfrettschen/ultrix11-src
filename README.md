@@ -2,6 +2,17 @@
 
 The Ultrix-11 3.1 source code.
 
+## Source Layout
+
+| Directory | Purpose |
+|-----------|---------|
+| `src/`    | Userland utilities |
+| `sys/`    | Kernel sources |
+| `usr/`    | User programs and libraries |
+| `arch/`   | Architecture-specific code |
+| `etc/`    | Configuration files and scripts |
+| `docs/`   | Project documentation |
+
 ## Building
 
 The repository uses a unified Makefile system. Run `make` to build both the
