@@ -1,4 +1,12 @@
 # SCCSID: @(#)makefile	3.0	4/22/86
+# Toolchain configuration
+CC ?= cc
+CFLAGS ?= -O2
+AS ?= as
+LDFLAGS ?=
+
+export CC CFLAGS AS LDFLAGS
+
 #
 ######################################################################
 #   Copyright (c) Digital Equipment Corporation 1984, 1985, 1986.    #
@@ -26,30 +34,30 @@ cmds:	forceit
 	-(for i in ${CMDS} ;\
 	do \
 	    (echo "cd $$i"; cd $$i; \
-	    echo make "CC=${CC}" "AS=${AS}" ;\
-	         make "CC=${CC}" "AS=${AS}") ;\
+	    echo make "CC=$(CC)" "CFLAGS=$(CFLAGS)" "AS=$(AS)" "LDFLAGS=$(LDFLAGS)" ;\
+	         make "CC=$(CC)" "CFLAGS=$(CFLAGS)" "AS=$(AS)" "LDFLAGS=$(LDFLAGS)") ;\
 	done)
 
 flibs:	forceit
 	-(for i in ${FLIBS} ;\
 	do \
 	    (echo "cd $$i"; cd $$i ;\
-	    echo make "CC=${CC}" "AS=${AS}" ;\
-	         make "CC=${CC}" "AS=${AS}") ;\
+	    echo make "CC=$(CC)" "CFLAGS=$(CFLAGS)" "AS=$(AS)" "LDFLAGS=$(LDFLAGS)" ;\
+	         make "CC=$(CC)" "CFLAGS=$(CFLAGS)" "AS=$(AS)" "LDFLAGS=$(LDFLAGS)") ;\
 	done)
 
 clibs:	forceit
 	-(for i in ${CLIBS} ;\
 	do \
 	    (echo "cd $$i"; cd $$i ;\
-	    echo make "CC=${CC}" "AS=${AS}" ;\
-	         make "CC=${CC}" "AS=${AS}") ;\
+	    echo make "CC=$(CC)" "CFLAGS=$(CFLAGS)" "AS=$(AS)" "LDFLAGS=$(LDFLAGS)" ;\
+	         make "CC=$(CC)" "CFLAGS=$(CFLAGS)" "AS=$(AS)" "LDFLAGS=$(LDFLAGS)") ;\
 	done)
 
 crypt:
-	cd crypt; make "CC=${CC}" "AS=${AS}"
+	cd crypt; make "CC=$(CC)" "CFLAGS=$(CFLAGS)" "AS=$(AS)" "LDFLAGS=$(LDFLAGS)"
 games:
-	cd games; make "CC=${CC}" "AS=${AS}"
+	cd games; make "CC=$(CC)" "CFLAGS=$(CFLAGS)" "AS=$(AS)" "LDFLAGS=$(LDFLAGS)"
 
 sources tags sccsinfo: forceit
 	-(for i in ${SUBDIRS} ;\
@@ -64,32 +72,32 @@ instcmds: forceit
 	-(for i in ${CMDS} ;\
 	do \
 	    (echo "cd $$i"; cd $$i ;\
-	    echo make install "DESTDIR=${DESTDIR}" "CC=${CC}" "AS=${AS}" ;\
-	    make install "DESTDIR=${DESTDIR}" "CC=${CC}" "AS=${AS}") ;\
+	    echo make install "DESTDIR=$(DESTDIR)" "CC=$(CC)" "CFLAGS=$(CFLAGS)" "AS=$(AS)" "LDFLAGS=$(LDFLAGS)" ;\
+	    make install "DESTDIR=$(DESTDIR)" "CC=$(CC)" "CFLAGS=$(CFLAGS)" "AS=$(AS)" "LDFLAGS=$(LDFLAGS)") ;\
 	done)
 
 instflibs: forceit
 	-(for i in ${FLIBS} ;\
 	do \
 	    (echo "cd $$i"; cd $$i ;\
-	    echo make install "DESTDIR=${DESTDIR}" "CC=${CC}" "AS=${AS}" ;\
-	    make install "DESTDIR=${DESTDIR}" "CC=${CC}" "AS=${AS}") ;\
+	    echo make install "DESTDIR=$(DESTDIR)" "CC=$(CC)" "CFLAGS=$(CFLAGS)" "AS=$(AS)" "LDFLAGS=$(LDFLAGS)" ;\
+	    make install "DESTDIR=$(DESTDIR)" "CC=$(CC)" "CFLAGS=$(CFLAGS)" "AS=$(AS)" "LDFLAGS=$(LDFLAGS)") ;\
 	done)
 
 instclibs: forceit
 	-(for i in ${CLIBS} ;\
 	do \
 	    (echo "cd $$i"; cd $$i ;\
-	    echo make install "DESTDIR=${DESTDIR}" "CC=${CC}" "AS=${AS}" ;\
-	    make install "DESTDIR=${DESTDIR}" "CC=${CC}" "AS=${AS}") ;\
+	    echo make install "DESTDIR=$(DESTDIR)" "CC=$(CC)" "CFLAGS=$(CFLAGS)" "AS=$(AS)" "LDFLAGS=$(LDFLAGS)" ;\
+	    make install "DESTDIR=$(DESTDIR)" "CC=$(CC)" "CFLAGS=$(CFLAGS)" "AS=$(AS)" "LDFLAGS=$(LDFLAGS)") ;\
 	done)
 
 instmisc: forceit
 	-(for i in ${MISC} ;\
 	do \
 	    (echo "cd $$i"; cd $$i ;\
-	    echo make install "DESTDIR=${DESTDIR}" "CC=${CC}" "AS=${AS}" ;\
-	    make install "DESTDIR=${DESTDIR}" "CC=${CC}" "AS=${AS}") ;\
+	    echo make install "DESTDIR=$(DESTDIR)" "CC=$(CC)" "CFLAGS=$(CFLAGS)" "AS=$(AS)" "LDFLAGS=$(LDFLAGS)" ;\
+	    make install "DESTDIR=$(DESTDIR)" "CC=$(CC)" "CFLAGS=$(CFLAGS)" "AS=$(AS)" "LDFLAGS=$(LDFLAGS)") ;\
 	done)
 
 clean clobber:	forceit
