@@ -27,9 +27,20 @@ char id_access[] = "(2.9BSD)  access_.c  1.3";
 #define MAXPATHLEN	128
 #endif
 
-ftnint access_(name, mode, namlen, modlen)
-char *name, *mode;
-ftnlen namlen, modlen;
+/**
+ * @brief Determine accessibility of a file.
+ *
+ * This routine checks whether the file pointed to by @p name can be
+ * accessed according to @p mode.
+ *
+ * @param name    File name string.
+ * @param mode    Access mode string containing any of 'r', 'w', 'x', or ' '.
+ * @param namlen  Length of @p name.
+ * @param modlen  Length of @p mode.
+ *
+ * @return 0 if the file is accessible as requested, otherwise an errno value.
+ */
+ftnint access_(char *name, char *mode, ftnlen namlen, ftnlen modlen)
 {
 	char buf[MAXPATHLEN];
 	int m = 0;
