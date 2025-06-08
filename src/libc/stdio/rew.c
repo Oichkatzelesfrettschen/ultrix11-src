@@ -8,17 +8,21 @@
 /*
  * SCCSID: @(#)rew.c	3.0	4/22/86
  */
-#include	<stdio.h>
+#include <stdio.h>
 
-void
-rewind(iop)
-	register struct _iobuf *iop;
+/**
+ * @brief Reset a stream to the beginning of the file.
+ *
+ * @param iop Stream to rewind.
+ */
+
+void rewind(iop) register struct _iobuf *iop;
 {
-	fflush(iop);
-	lseek(fileno(iop), 0L, 0);
-	iop->_cnt = 0;
-	iop->_ptr = iop->_base;
-	iop->_flag &= ~(_IOERR|_IOEOF);
-	if (iop->_flag & _IORW)
-		iop->_flag &= ~(_IOREAD|_IOWRT);
+  fflush(iop);
+  lseek(fileno(iop), 0L, 0);
+  iop->_cnt = 0;
+  iop->_ptr = iop->_base;
+  iop->_flag &= ~(_IOERR | _IOEOF);
+  if (iop->_flag & _IORW)
+    iop->_flag &= ~(_IOREAD | _IOWRT);
 }

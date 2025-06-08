@@ -9,33 +9,37 @@
  * static char sccsid[] = "@(#)seekdir.c	3.0	4/22/86";
  */
 
-#include <sys/param.h>
-#include <ndir.h>
 #include "odir.h"
+#include <ndir.h>
+#include <sys/param.h>
 
-/*
- * seek to an entry in a directory.
- * Only values returned by "telldir" should be passed to seekdir.
+/**
+ * @brief Seek to a directory entry position.
+ *
+ * Repositions the stream to @p loc previously returned by
+ * ::telldir. This routine will read forward through the
+ * directory until the requested offset is reached.
+ *
+ * @param dirp Directory descriptor returned by ::opendir.
+ * @param loc  Value obtained from ::telldir.
  */
-void
-seekdir(dirp, loc)
-	register DIR *dirp;
-	long loc;
+void seekdir(dirp, loc) register DIR *dirp;
+long loc;
 {
-	long base, offset;
-	struct direct *dp;
+  long base, offset;
+  struct direct *dp;
 
-/* rti!trt: Always seek.  Slower, but safer. This may even fix a bug.
-	if (loc == telldir(dirp))
-		return;
- */
-	base = (loc / RDSZ) * RDSZ;
-	offset = (loc % RDSZ)/sizeof(struct olddirect)*OENTSIZ;
-	lseek(dirp->dd_fd, base, 0);
-	dirp->dd_loc = 0;
-	while (dirp->dd_loc < offset) {
-		dp = readdir(dirp);
-		if (dp == NULL)
-			return;
-	}
+  /* rti!trt: Always seek.  Slower, but safer. This may even fix a bug.
+          if (loc == telldir(dirp))
+                  return;
+   */
+  base = (loc / RDSZ) * RDSZ;
+  offset = (loc % RDSZ) / sizeof(struct olddirect) * OENTSIZ;
+  lseek(dirp->dd_fd, base, 0);
+  dirp->dd_loc = 0;
+  while (dirp->dd_loc < offset) {
+    dp = readdir(dirp);
+    if (dp == NULL)
+      return;
+  }
 }

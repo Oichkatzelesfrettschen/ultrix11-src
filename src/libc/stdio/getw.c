@@ -19,15 +19,23 @@
  */
 #include <stdio.h>
 
-int
-getw(stream)
+/**
+ * @brief Read a word from a stream.
+ *
+ * Reads a machine word worth of bytes from @p stream and
+ * assembles them into an integer using the host byte order.
+ *
+ * @param stream Stream to read from.
+ * @return The word read or EOF on error.
+ */
+int getw(stream)
 register FILE *stream;
 {
-	int w;
-	register char *s = (char *)&w;
-	register int i = sizeof(int);
+  int w;
+  register char *s = (char *)&w;
+  register int i = sizeof(int);
 
-	while (--i >= 0)
-		*s++ = getc(stream);
-	return (feof(stream) || ferror(stream) ? EOF : w);
+  while (--i >= 0)
+    *s++ = getc(stream);
+  return (feof(stream) || ferror(stream) ? EOF : w);
 }

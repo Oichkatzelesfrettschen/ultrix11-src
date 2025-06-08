@@ -10,8 +10,14 @@
  */
 #include <stdio.h>
 
-fputc(c, fp)
-FILE *fp;
+/**
+ * @brief Write a character to a FILE stream.
+ *
+ * @param c   Character to write.
+ * @param fp  Output stream.
+ * @return The character written or EOF on error.
+ */
+fputc(c, fp) FILE *fp;
 {
-	return(putc(c, fp));
+  return (putc(c, fp));
 }
