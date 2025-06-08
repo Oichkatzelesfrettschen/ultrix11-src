@@ -11,4 +11,7 @@ userland utilities and the kernel on an x86_64 host. The main targets are:
 - `make clean` – remove build products
 - `make docs` – build the Doxygen and Sphinx documentation
 
+Before running the above targets, execute `./setup.sh` to install the
+required build tools and Python packages.
+
 Set `CC`, `CFLAGS`, `AS`, and `LDFLAGS` to override the default toolchain.
