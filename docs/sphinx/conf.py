@@ -18,7 +18,7 @@ extensions = [
 
 # Breathe configuration links Sphinx to the Doxygen XML output
 breathe_projects = {
-    "Ultrix-11": str(Path(__file__).resolve().parents[2] / "docs" / "doxygen" / "xml")
+    "Ultrix-11": Path(__file__).resolve().parents[2] / "docs" / "doxygen" / "xml"
 }
 breathe_default_project = "Ultrix-11"
 
@@ -28,3 +28,7 @@ exclude_patterns = []
 # HTML output options
 html_theme = "alabaster"
 html_static_path = ["_static"]
+
+def setup(app):
+    """Hook to include project customizations."""
+    app.add_css_file("custom.css")
