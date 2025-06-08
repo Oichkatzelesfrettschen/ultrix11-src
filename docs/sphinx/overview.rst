@@ -14,6 +14,7 @@ Source Layout
 * ``usr`` – user programs and libraries.
 * ``etc`` – configuration files and scripts.
 * ``docs`` – documentation for developers and users.
+* ``sys/arch/x86_64_v1`` – experimental 64-bit architecture support.
 
 The ``Makefile`` at the repository root coordinates building the
 sources.  See :doc:`build_steps` for detailed build instructions.

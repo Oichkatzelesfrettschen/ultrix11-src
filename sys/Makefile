@@ -8,11 +8,15 @@ AS ?= as
 # Linker flags
 LDFLAGS ?=
 # Target architecture (defaults to PDP-11)
+
 ARCH ?= pdp11
 
 export CC CFLAGS AS LDFLAGS ARCH
 
 SUBDIRS := conf dev distr mdec net ovdev ovnet ovsys sas sys
+ifeq ($(ARCH),x86_64_v1)
+SUBDIRS += arch/x86_64_v1
+endif
 
 .PHONY: all clean
 
@@ -35,3 +39,4 @@ all:
 clean:
        $(MAKE) -C arch/$(ARCH) clean ARCH=$(ARCH)
 endif
+

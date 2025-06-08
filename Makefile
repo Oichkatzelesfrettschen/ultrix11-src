@@ -9,6 +9,7 @@ ARCH ?= pdp11
 AS ?= as
 # Additional linker flags
 LDFLAGS ?=
+ARCH ?= x86_64_v1
 
 export CC CFLAGS AS LDFLAGS ARCH
 

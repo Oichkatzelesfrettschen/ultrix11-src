@@ -12,3 +12,4 @@ Ultrix-11 Documentation
    emulator_setup
    emulator_lab
    usage
+   arch_x86_64_v1
