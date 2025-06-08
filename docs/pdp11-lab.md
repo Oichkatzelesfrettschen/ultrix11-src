@@ -109,4 +109,24 @@ This toolchain produces PDP-11 binaries that can be transferred to the emulator 
 Run `scripts/setup_lab.sh` to install packages, including build dependencies for
 the cross toolchain, and download the OS media automatically.
 
+## 8. Host x86_64 Cross-Compilation and Virtualization
+
+Additional packages enable testing x86_64 programs built from the Ultrix
+environment.
+
+Install the tools with:
+
+```bash
+sudo apt install --yes nasm gcc-multilib
+```
+
+For QEMU-based x86_64 emulation also run:
+
+```bash
+sudo apt install --yes qemu-system-x86
+```
+
+Setting the environment variable `INSTALL_QEMU=1` when executing
+`scripts/setup_lab.sh` installs QEMU automatically.
+
 

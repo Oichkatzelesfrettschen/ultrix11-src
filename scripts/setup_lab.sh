@@ -12,10 +12,18 @@ sudo apt update
 
 # Base build stack
 sudo apt install -y \
-	build-essential cmake git pkg-config \
-	libreadline-dev libpcap-dev zlib1g-dev \
-	flex bison \
-	libgmp-dev libmpfr-dev texinfo file
+        build-essential cmake git pkg-config \
+        libreadline-dev libpcap-dev zlib1g-dev \
+        flex bison \
+        libgmp-dev libmpfr-dev texinfo file
+
+# Tools required for x86_64 cross-compilation
+sudo apt install -y nasm gcc-multilib
+
+# Optional QEMU virtualization for x86_64 tests
+if [[ "${INSTALL_QEMU:-0}" -eq 1 ]]; then
+    sudo apt install -y qemu-system-x86
+fi
 
 # SIMH emulator
 sudo apt install -y simh
