@@ -4,8 +4,10 @@ CC ?= cc
 CFLAGS ?= -O2
 AS ?= as
 LDFLAGS ?=
+# Target architecture passed from the root Makefile
+ARCH ?= pdp11
 
-export CC CFLAGS AS LDFLAGS
+export CC CFLAGS AS LDFLAGS ARCH
 
 #
 ######################################################################
