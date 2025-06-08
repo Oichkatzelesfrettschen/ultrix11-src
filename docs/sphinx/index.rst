@@ -6,6 +6,9 @@ Ultrix-11 Documentation
    :caption: Contents:
 
    overview
+   repository_overview
    build_steps
+   build_workflow
    emulator_setup
+   emulator_lab
    usage
