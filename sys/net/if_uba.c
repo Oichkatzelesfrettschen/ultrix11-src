@@ -23,12 +23,10 @@
 
 #include <vaxif/if_uba.h>
 #include <sys/ubavar.h>
-
-/*
+/**
  * Routines supporting UNIBUS network interfaces.
  *
- * TODO:
- *	Support interfaces using only one BDP statically.
+ * @todo Support interfaces using only one BDP statically.
  */
 
 #if vax
@@ -39,6 +37,8 @@
  * doing this twice: once for reading and once for writing.  We also
  * allocate page frames in the mbuffer pool for these pages.
  * NOTE IT IS IMPLICITLY ASSUMED THAT hlen < PGSIZE
+/**
+ * Initialize a UNIBUS interface.
  */
 if_ubainit(ifu, uban, hlen, nmr)
 	register struct ifuba *ifu;
@@ -81,6 +81,9 @@ bad:
  * possibly a buffered data path, and initializing the fields of
  * the ifrw structure to minimize run-time overhead.
  */
+/**
+ * Allocate resources for a UNIBUS interface read/write structure.
+ */
 static
 if_ubaalloc(ifu, ifrw, nmr)
 	struct ifuba *ifu;
@@ -110,6 +113,9 @@ if_ubaalloc(ifu, ifrw, nmr)
  * data into mbufs.  When full cluster sized units are present
  * on the interface on cluster boundaries we can get them more
  * easily by remapping, and take advantage of this here.
+ */
+/**
+ * Retrieve a packet from the interface and build a chain of mbufs.
  */
 struct mbuf *
 if_rubaget(ifu, totlen, off0)
@@ -197,6 +203,8 @@ bad:
  * The argument chain of mbufs includes the local network
  * header which is copied to be in the mapped, aligned
  * i/o space.
+/**
+ * Map a chain of mbufs to the UNIBUS for transmission.
  */
 if_wubaput(ifu, m)
 	register struct ifuba *ifu;
@@ -363,14 +371,16 @@ if_wubaput(ifu, m)
 
 #ifdef	pdp11
 #ifdef	UNIBUS_MAP
-#define	KDSA	((u_short *) 0172360)
 struct ubmeter ub_meter;
-int	ub_wantmr;
+/** Address of the kernel data space map register. */
+#define KDSA    ((u_short *) 0172360)
 
 /*
  *	Map UNIBUS virtual memory over some address in kernel data
  *	space.  We're similar to the "mapalloc" routine used for
  *	raw I/O, but for different objects.
+/**
+ * Map kernel virtual memory to UNIBUS address space.
  */
 ubadr_t uballoc(ubanum, addr, size, x)
 int ubanum;	/* ignored for pdp11 */
@@ -423,6 +433,9 @@ unsigned size;
 /*
  *	Now for mapping an arbitrary piece of physical memory into
  *	UNIBUS virtual address space.
+ */
+/**
+ * Map physical memory into UNIBUS address space.
  */
 ubadr_t ubmalloc(ubanum, addr, size, x)
 int ubanum;	/* unused on pdp11 */
