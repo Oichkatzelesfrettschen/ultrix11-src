@@ -12,6 +12,9 @@ userland utilities and the kernel on an x86_64 host. The main targets are:
 - `make clean` – remove build products
 - `make docs` – build the Doxygen and Sphinx documentation
 
+Experimental support for an `arch_x86_64_v1` build is available. Details
+are documented in `docs/sphinx/arch_x86_64_v1.rst`.
+
 Before running the above targets, execute `./setup.sh` to install the
 required build tools and Python packages.
 
