@@ -10,7 +10,7 @@ LDFLAGS ?=
 
 export CC CFLAGS AS LDFLAGS
 
-.PHONY: all userland kernel clean
+.PHONY: all userland kernel clean docs
 
 all: userland kernel
 
@@ -25,3 +25,10 @@ kernel:
 clean:
 	$(MAKE) -C src clean
 	$(MAKE) -C sys clean
+
+# Build project documentation using Doxygen and Sphinx
+docs:
+	# Generate API documentation via Doxygen
+	@doxygen docs/Doxyfile
+	# Build the HTML docs with Sphinx
+	@sphinx-build -b html docs/sphinx docs/sphinx/_build
