@@ -1,5 +1,5 @@
 # Doxygen configuration for Ultrix-11 source tree
-# Scans `src/` and `sys/` directories for documentation comments.
+# Scans `src/`, `sys/`, and the new `arch/` directory for documentation comments.
 # Generated for documentation build via `doxygen`.
 
 PROJECT_NAME           = "Ultrix-11"
@@ -7,7 +7,7 @@ PROJECT_BRIEF          = "Historic UNIX source code"
 OUTPUT_DIRECTORY       = docs/doxygen
 GENERATE_LATEX         = NO
 GENERATE_XML           = YES
-INPUT                  = src sys
+INPUT                  = src sys arch
 FILE_PATTERNS          = *.c *.h
 RECURSIVE              = YES
 EXTRACT_ALL            = YES
