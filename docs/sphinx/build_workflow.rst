@@ -1,15 +1,19 @@
 Build Workflow
 ==============
 
-This page explains the make-based workflow used to compile Ultrix-11.
+This page explains the CMake-based workflow used to compile Ultrix-11.  The
+``Makefile`` still acts as a convenient wrapper so traditional commands
+continue to function.
 
 Targets
 -------
 
-* ``make`` – build user programs and the kernel.
-* ``make userland`` – build only the userland sources under ``src``.
-* ``make kernel`` – build the kernel located in ``sys``.
-* ``make clean`` – remove build artifacts.
+* ``make`` – configure CMake and build everything.
+* ``make userland`` – build only the userland targets.
+* ``make kernel`` – build only the kernel.
+* ``make clean`` – remove the ``build`` directory.
+* ``cmake -S . -B build`` – manual configuration step if not using ``make``.
+* ``cmake --build build --target <name>`` – build specific targets.
 
 Cross Compilation
 -----------------
