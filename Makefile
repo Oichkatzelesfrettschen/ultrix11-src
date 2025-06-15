@@ -3,33 +3,41 @@
 CC ?= cc
 # Compiler flags for C sources
 CFLAGS ?= -O2
-# Target architecture (defaults to PDP-11 for historical builds)
-ARCH ?= pdp11
+# Target architecture
+ARCH ?= x86_64_v1
 # Assembler used for assembly sources
 AS ?= as
 # Additional linker flags
 LDFLAGS ?=
-ARCH ?= x86_64_v1
 
 export CC CFLAGS AS LDFLAGS ARCH
 
 .PHONY: all userland kernel clean docs
+	
+BUILD_DIR ?= build
+	
+CONFIGURE_CMD = \
+cmake -S . -B $(BUILD_DIR) \
+-DARCH=$(ARCH) \
+-DCMAKE_C_FLAGS="$(CFLAGS)" \
+-DCMAKE_EXE_LINKER_FLAGS="$(LDFLAGS)"
 
-all: userland kernel
+all: configure
+	cmake --build $(BUILD_DIR)
 
 # Build userland programs under src/
-userland:
-	# Propagate target architecture to the userland build
-	$(MAKE) -C src ARCH=$(ARCH)
+userland: configure
+	cmake --build $(BUILD_DIR) --target userland
 
 # Build kernel sources under sys/
-kernel:
-	# Propagate target architecture to the kernel build
-	$(MAKE) -C sys ARCH=$(ARCH)
+kernel: configure
+	cmake --build $(BUILD_DIR) --target kernel
+
+configure:
+	$(CONFIGURE_CMD)
 
 clean:
-	$(MAKE) -C src clean ARCH=$(ARCH)
-	$(MAKE) -C sys clean ARCH=$(ARCH)
+	rm -rf $(BUILD_DIR)
 
 # Build project documentation using Doxygen and Sphinx
 docs:
