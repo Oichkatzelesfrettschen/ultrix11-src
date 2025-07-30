@@ -19,17 +19,17 @@ static char Sccsid[] = "@(#)chog.c	3.0	4/21/86";
 #include <ctype.h>
 #include <pwd.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/types.h>
 
 /**
  * @brief Program entry point.
  *
- * @param argc Argument count.
- * @param argv Argument vector.
- * @return EXIT_SUCCESS on success.
+ * @param argc Number of command line arguments.
+ * @param argv Array of argument strings.
+ * @return EXIT_SUCCESS on success, EXIT_FAILURE on error.
  */
-int main(int argc, char **argv) int argc;
-{
+int main(int argc, char **argv) {
   int uid, gid;
   int status = 0;
   struct passwd *pwd, *getpwnam(), *getpwuid();
@@ -58,12 +58,17 @@ int main(int argc, char **argv) int argc;
       status = 1;
     }
   }
-  exit(status);
+  return status;
 }
 
-isnumber(s) register char *s;
-{
-  while (isdigit(*s))
+/**
+ * @brief Determine if a string contains only digits.
+ *
+ * @param s Input string to check.
+ * @return 1 if the string is numeric, otherwise 0.
+ */
+static int isnumber(const char *s) {
+  while (isdigit((unsigned char)*s))
     s++;
-  return ((*s == '\0') ? 1 : 0);
+  return *s == '\0';
 }

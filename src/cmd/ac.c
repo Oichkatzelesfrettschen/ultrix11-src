@@ -5,11 +5,6 @@
  **********************************************************************/
 /**
  * @file ac.c
- * @brief User accounting report tool.
- */
-
-/**
- * @file ac.c
  * @brief User accounting utility: processes wtmp records to report
  *        user login times per terminal and per user.
  *
@@ -20,7 +15,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/timeb.h>
+#include <sys/time.h>
 #include <sys/types.h>
 #include <time.h>
 #include <utmp.h>
@@ -70,10 +65,10 @@ static void newday(void);
 static void print_date(void);
 
 /**
- * @brief Program entry point.
+ * @brief Entry point for the accounting utility.
  *
- * @param argc Argument count.
- * @param argv Argument vector.
+ * @param argc Number of command line arguments.
+ * @param argv Array of argument strings.
  * @return EXIT_SUCCESS on success, EXIT_FAILURE on error.
  */
 int main(int argc, char **argv) {
@@ -127,7 +122,8 @@ int main(int argc, char **argv) {
   /* Handle end-of-file "logout all" record */
   ibuf.ut_name[0] = '\0';
   ibuf.ut_line[0] = '~';
-  time(&ibuf.ut_time);
+  time_t now = time(NULL);
+  ibuf.ut_time = now;
   loop();
 
   print_totals();
@@ -272,12 +268,14 @@ static int among(int idx) {
  * @brief Advance to the next midnight boundary.
  */
 static void newday(void) {
-  struct timeb tb;
   if (midnight == 0) {
-    ftime(&tb);
-    midnight = tb.timezone * 60;
-    if (localtime(&lastime)->tm_isdst)
-      midnight -= 3600;
+    struct tm lt;
+    localtime_r(&lastime, &lt);
+    lt.tm_sec = 0;
+    lt.tm_min = 0;
+    lt.tm_hour = 0;
+    lt.tm_mday++;
+    midnight = mktime(&lt);
   }
   while (midnight <= ibuf.ut_time)
     midnight += day;
