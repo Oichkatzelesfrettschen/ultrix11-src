@@ -17,8 +17,7 @@
  * @param iop Stream to modify.
  * @return The character pushed back or EOF on error.
  */
-ungetc(c, iop) register FILE *iop;
-{
+int ungetc(int c, FILE *iop) {
   if (c == EOF)
     return (EOF);
   if ((iop->_flag & _IOREAD) == 0 || iop->_ptr <= iop->_base)

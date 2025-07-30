@@ -66,9 +66,11 @@ int main(int argc, char **argv) {
  *
  * @param s Input string to check.
  * @return 1 if the string is numeric, otherwise 0.
+
  */
 static int isnumber(const char *s) {
   while (isdigit((unsigned char)*s))
     s++;
-  return *s == '\0';
+  return (*s == '\0') ? 1 : 0;
+
 }
