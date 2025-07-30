@@ -28,8 +28,7 @@ static char Sccsid[] = "@(#)chog.c	3.0	4/21/86";
  * @param argv Argument vector.
  * @return EXIT_SUCCESS on success.
  */
-int main(int argc, char **argv) int argc;
-{
+int main(int argc, char **argv) {
   int uid, gid;
   int status = 0;
   struct passwd *pwd, *getpwnam(), *getpwuid();
@@ -61,9 +60,14 @@ int main(int argc, char **argv) int argc;
   exit(status);
 }
 
-isnumber(s) register char *s;
-{
-  while (isdigit(*s))
+/**
+ * @brief Determine if a string is composed entirely of digits.
+ *
+ * @param s String to examine.
+ * @return 1 if @p s contains only digits, otherwise 0.
+ */
+static int isnumber(const char *s) {
+  while (isdigit((unsigned char)*s))
     s++;
-  return ((*s == '\0') ? 1 : 0);
+  return (*s == '\0') ? 1 : 0;
 }
