@@ -1,14 +1,17 @@
 # Root Makefile to build userland and kernel
 # Compiler used for all builds
 CC ?= cc
+# Common warning flags
+include scripts/build_flags.mk
+
 # Compiler flags for C sources
-CFLAGS ?= -O2 -Wall -Wextra -Werror
+CFLAGS ?= -O2 $(WARN_FLAGS)
 # Target architecture used for the build
 # Defaults to x86_64_v1 to match the available implementation. Override
 # on the command line for other architectures.
 # Defaults to a modern x86_64 variant. Override on the
 # command line for other architectures, e.g. `ARCH=pdp11`.
-=ARCH ?= x86_64_v1
+ARCH ?= x86_64_v1
 
 # Assembler used for assembly sources
 AS ?= as

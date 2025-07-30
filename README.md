@@ -15,16 +15,30 @@ The Ultrix-11 3.1 source code.
 
 ## Building
 
-The repository uses a unified Makefile system. Run `make` to build both the
-userland utilities and the kernel on an x86_64 host. The main targets are:
+The repository uses a unified Makefile system. A helper script
+`scripts/build.sh` simplifies invoking common build types. The default
+architecture is `x86_64_v1`. Run the script without arguments for a standard
+build:
+
+```bash
+./scripts/build.sh
+```
+Available build types are:
+
+- `generic` – optimized for normal use
+- `performance` – enables `-O3`, `-march=native`, and link-time optimizations
+- `developer` – turns on sanitizers and debug information
+
+The main Makefile targets remain available:
 
 - `make userland` – build the programs under `src/`
 - `make kernel` – build the kernel sources under `sys/`
 - `make clean` – remove build products
 - `make docs` – build the Doxygen and Sphinx documentation
 
-Experimental support for an `arch_x86_64_v1` build is available. Details
-are documented in `docs/sphinx/arch_x86_64_v1.rst`.
+To build the historic PDP-11 target instead, pass `ARCH=pdp11` to the
+script or Makefile. Additional details on the 64-bit environment are
+available in `docs/sphinx/arch_x86_64_v1.rst`.
 
 Before running the above targets, execute `./setup.sh` to install the
 required build tools and Python packages.
