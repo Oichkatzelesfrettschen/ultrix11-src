@@ -28,8 +28,7 @@ static char Sccsid[] = "@(#)chog.c	3.0	4/21/86";
  * @param argv Argument vector.
  * @return EXIT_SUCCESS on success.
  */
-int main(int argc, char **argv) int argc;
-{
+int main(int argc, char **argv) {
   int uid, gid;
   int status = 0;
   struct passwd *pwd, *getpwnam(), *getpwuid();

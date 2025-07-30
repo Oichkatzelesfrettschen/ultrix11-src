@@ -1,5 +1,5 @@
 Directory Handling Functions
-===========================
+============================
 
 The Ultrix libc provides a traditional directory interface
 compatible with early BSD systems. Key routines include:
