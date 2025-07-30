@@ -14,11 +14,12 @@
  * chog user file ...
  */
 
-static char Sccsid[] = "@(#)chog.c	3.0	4/21/86";
+static char Sccsid[] = "@(#)chog.c 3.0 4/21/86"; /**< SCCS id string. */
 
 #include <ctype.h>
 #include <pwd.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/types.h>
 
 /**
@@ -28,11 +29,10 @@ static char Sccsid[] = "@(#)chog.c	3.0	4/21/86";
  * @param argv Argument vector.
  * @return EXIT_SUCCESS on success.
  */
-int main(int argc, char **argv) int argc;
-{
+int main(int argc, char **argv) {
   int uid, gid;
   int status = 0;
-  struct passwd *pwd, *getpwnam(), *getpwuid();
+  struct passwd *pwd;
 
   if (argc < 3) {
     printf("usage: chog user file ...\n");
@@ -61,9 +61,14 @@ int main(int argc, char **argv) int argc;
   exit(status);
 }
 
-isnumber(s) register char *s;
-{
-  while (isdigit(*s))
+/**
+ * @brief Determine whether a string represents a numeric value.
+ *
+ * @param s String to test.
+ * @return 1 if the string is numeric, otherwise 0.
+ */
+static int isnumber(const char *s) {
+  while (isdigit((unsigned char)*s))
     s++;
-  return ((*s == '\0') ? 1 : 0);
+  return (*s == '\0') ? 1 : 0;
 }
