@@ -12,3 +12,4 @@ FILE_PATTERNS          = *.c *.h
 RECURSIVE              = YES
 EXTRACT_ALL            = YES
 QUIET                  = YES
+HAVE_DOT               = NO
