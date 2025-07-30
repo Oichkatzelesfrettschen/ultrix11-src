@@ -5,7 +5,7 @@ add_executable(ac cmd/ac.c)
 
 # Enable warnings for modern compilation
 if (CMAKE_C_COMPILER_ID MATCHES "Clang|GNU")
-  target_compile_options(ac PRIVATE -Wall -Wextra)
+  target_compile_options(ac PRIVATE -Wall -Wextra -Werror)
 endif()
 
 set(USERLAND_TARGETS ac)
