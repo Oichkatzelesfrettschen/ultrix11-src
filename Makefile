@@ -4,11 +4,9 @@ CC ?= cc
 # Compiler flags for C sources
 CFLAGS ?= -O2
 # Target architecture used for the build
-# Defaults to PDP-11 for historical compatibility. Override on the
-# command line for other architectures, e.g. `ARCH=x86_64_v1`.
-ARCH ?= pdp11
-# Target architecture
-#ARCH ?= x86_64_v1
+# Defaults to a modern x86_64 variant. Override on the
+# command line for other architectures, e.g. `ARCH=pdp11`.
+ARCH ?= x86_64_v1
 
 # Assembler used for assembly sources
 AS ?= as
