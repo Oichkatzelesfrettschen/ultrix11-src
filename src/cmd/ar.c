@@ -165,6 +165,11 @@ setcom(fun) int (*fun)();
 
 /**
  * @brief Replace or insert files into the archive.
+ *
+ * Iterates over each named file and updates the archive
+ * accordingly.
+ *
+ * @return void
  */
 rcmd() {
   register f;
@@ -199,6 +204,10 @@ rcmd() {
 
 /**
  * @brief Delete files from the archive.
+ *
+ * Removes each specified member if present.
+ *
+ * @return void
  */
 dcmd() {
 
@@ -219,6 +228,11 @@ dcmd() {
 
 /**
  * @brief Extract files from the archive.
+ *
+ * Creates each named file with the permissions stored in the
+ * archive and writes the archived contents to disk.
+ *
+ * @return void
  */
 xcmd() {
   register f;
@@ -247,6 +261,10 @@ xcmd() {
 
 /**
  * @brief Print files from the archive to standard output.
+ *
+ * Used by the `p` option to stream file contents to stdout.
+ *
+ * @return void
  */
 pcmd() {
 
@@ -267,6 +285,10 @@ pcmd() {
 
 /**
  * @brief Move files within the archive.
+ *
+ * Reorders archive members based on the `a` or `b` flags.
+ *
+ * @return void
  */
 mcmd() {
 
@@ -295,6 +317,11 @@ mcmd() {
 
 /**
  * @brief List archive contents.
+ *
+ * Prints the names of archive members. Verbose mode also
+ * emits file metadata.
+ *
+ * @return void
  */
 tcmd() {
 
@@ -312,6 +339,11 @@ tcmd() {
 
 /**
  * @brief Quick append files to the archive without checks.
+ *
+ * Appends members to the end of the archive without any
+ * duplicate verification.
+ *
+ * @return void
  */
 qcmd() {
   register i, f;
@@ -361,6 +393,9 @@ init() {
 /**
  * @brief Open the archive file for reading.
  *
+ * Attempts to open `arnam` and verify it is in
+ * archive format.
+ *
  * @return 0 on success, 1 if the archive does not exist.
  */
 getaf() {
@@ -378,6 +413,11 @@ getaf() {
 
 /**
  * @brief Open the archive for writing in quick append mode.
+ *
+ * Creates the archive if it does not already exist and
+ * ensures the header magic is present.
+ *
+ * @return void
  */
 getqf() {
   int mbuf;
@@ -402,6 +442,8 @@ getqf() {
 
 /**
  * @brief Display usage information and exit.
+ *
+ * @return void
  */
 usage() {
   printf("usage: ar [%s][%s] archive files ...\n", opt, man);
@@ -410,6 +452,8 @@ usage() {
 
 /**
  * @brief Abort when the archive does not exist.
+ *
+ * @return void
  */
 noar() {
 
@@ -419,6 +463,8 @@ noar() {
 
 /**
  * @brief Signal handler that terminates the program.
+ *
+ * @return void
  */
 sigdone() { done(100); }
 
@@ -426,6 +472,7 @@ sigdone() { done(100); }
  * @brief Clean up temporary files and exit.
  *
  * @param c Exit code.
+ * @return void
  */
 done(c) {
 
@@ -472,6 +519,8 @@ morefil() {
 
 /**
  * @brief Complete file addition and install the archive.
+ *
+ * @return void
  */
 cleanup() {
   register i, f;
@@ -494,6 +543,8 @@ cleanup() {
 
 /**
  * @brief Finalize and write the new archive.
+ *
+ * @return void
  */
 install() {
   register i;
@@ -537,6 +588,7 @@ install() {
  * @brief Insert the specified file into the temporary archive.
  *
  * @param f File descriptor of the input file.
+ * @return void
  */
 movefil(f) {
   register char *cp;
@@ -583,6 +635,7 @@ stats() {
  * @param fi   Input file descriptor.
  * @param fo   Output file descriptor.
  * @param flag Combination of SKIP, IODD, OODD, or HEAD.
+ * @return void
  */
 copyfil(fi, fo, flag) {
   register i, o;
@@ -659,6 +712,11 @@ match() {
 
 /**
  * @brief Handle 'a' or 'b' options for positioning new files.
+ *
+ * Adjusts temporary file pointers as needed when placing new
+ * members before or after a reference member.
+ *
+ * @return void
  */
 bamatch() {
   register f;
@@ -688,6 +746,8 @@ bamatch() {
 
 /**
  * @brief Report an archive phase error.
+ *
+ * @return void
  */
 phserr() { fprintf(stderr, "ar: phase error on %s\n", file); }
 
@@ -695,6 +755,7 @@ phserr() { fprintf(stderr, "ar: phase error on %s\n", file); }
  * @brief Print an operation message when verbose mode is enabled.
  *
  * @param c Operation code character.
+ * @return void
  */
 mesg(c) {
 
@@ -746,6 +807,8 @@ char *s;
 
 /**
  * @brief Print a verbose listing of the current archive header.
+ *
+ * @return void
  */
 longt() {
   register char *cp;
@@ -771,6 +834,8 @@ int *m[] = {m1, m2, m3, m4, m5, m6, m7, m8, m9};
 
 /**
  * @brief Print file mode bits from arbuf.
+ *
+ * @return void
  */
 pmode() {
   register int **mp;
@@ -781,6 +846,8 @@ pmode() {
 
 /**
  * @brief Helper for pmode to output permission characters.
+ *
+ * @return void
  */
 select(pairp) int *pairp;
 {
@@ -795,6 +862,8 @@ select(pairp) int *pairp;
 
 /**
  * @brief Print a write error message and exit.
+ *
+ * @return void
  */
 wrerr() {
   perror("ar write error");
