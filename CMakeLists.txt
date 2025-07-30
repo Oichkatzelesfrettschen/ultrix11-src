@@ -1,6 +1,12 @@
 cmake_minimum_required(VERSION 3.16)
 project(ultrix11 C ASM)
 
+# Load common warning flags shared with the Make build
+file(STRINGS "${CMAKE_SOURCE_DIR}/scripts/build_flags.mk" WARN_FLAGS_LINE REGEX "^WARN_FLAGS")
+string(REPLACE "WARN_FLAGS =" "" WARN_FLAGS "${WARN_FLAGS_LINE}")
+string(STRIP "${WARN_FLAGS}" WARN_FLAGS)
+string(REPLACE " " ";" WARN_FLAGS "${WARN_FLAGS}")
+
 # Option for target architecture. Matches the Makefile variable.
 set(ARCH "x86_64_v1" CACHE STRING "Target architecture")
 
@@ -16,6 +22,12 @@ if(DEFINED ENV{AS})
 endif()
 if(DEFINED ENV{LDFLAGS})
   set(CMAKE_EXE_LINKER_FLAGS "$ENV{LDFLAGS} ${CMAKE_EXE_LINKER_FLAGS}" CACHE STRING "" FORCE)
+endif()
+
+if(MSVC)
+  add_compile_options(/W3 /WX)
+else()
+  add_compile_options(${WARN_FLAGS})
 endif()
 
 add_subdirectory(src)

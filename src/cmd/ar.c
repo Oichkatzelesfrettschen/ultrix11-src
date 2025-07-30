@@ -163,6 +163,9 @@ setcom(fun) int (*fun)();
   comfun = fun;
 }
 
+/**
+ * @brief Replace or insert files into the archive.
+ */
 rcmd() {
   register f;
 
@@ -194,6 +197,9 @@ rcmd() {
   cleanup();
 }
 
+/**
+ * @brief Delete files from the archive.
+ */
 dcmd() {
 
   init();
@@ -211,6 +217,9 @@ dcmd() {
   install();
 }
 
+/**
+ * @brief Extract files from the archive.
+ */
 xcmd() {
   register f;
 
@@ -236,6 +245,9 @@ xcmd() {
   }
 }
 
+/**
+ * @brief Print files from the archive to standard output.
+ */
 pcmd() {
 
   if (getaf())
@@ -253,6 +265,9 @@ pcmd() {
   }
 }
 
+/**
+ * @brief Move files within the archive.
+ */
 mcmd() {
 
   init();
@@ -278,6 +293,9 @@ mcmd() {
   install();
 }
 
+/**
+ * @brief List archive contents.
+ */
 tcmd() {
 
   if (getaf())
@@ -292,6 +310,9 @@ tcmd() {
   }
 }
 
+/**
+ * @brief Quick append files to the archive without checks.
+ */
 qcmd() {
   register i, f;
 
@@ -320,6 +341,9 @@ qcmd() {
   }
 }
 
+/**
+ * @brief Initialize temporary files for archive operations.
+ */
 init() {
   static mbuf = ARMAG;
 
@@ -334,6 +358,11 @@ init() {
     wrerr();
 }
 
+/**
+ * @brief Open the archive file for reading.
+ *
+ * @return 0 on success, 1 if the archive does not exist.
+ */
 getaf() {
   int mbuf;
 
@@ -347,6 +376,9 @@ getaf() {
   return (0);
 }
 
+/**
+ * @brief Open the archive for writing in quick append mode.
+ */
 getqf() {
   int mbuf;
 
@@ -368,19 +400,33 @@ getqf() {
   }
 }
 
+/**
+ * @brief Display usage information and exit.
+ */
 usage() {
   printf("usage: ar [%s][%s] archive files ...\n", opt, man);
   done(1);
 }
 
+/**
+ * @brief Abort when the archive does not exist.
+ */
 noar() {
 
   fprintf(stderr, "ar: %s does not exist\n", arnam);
   done(1);
 }
 
+/**
+ * @brief Signal handler that terminates the program.
+ */
 sigdone() { done(100); }
 
+/**
+ * @brief Clean up temporary files and exit.
+ *
+ * @param c Exit code.
+ */
 done(c) {
 
   if (tfnam)
@@ -392,6 +438,11 @@ done(c) {
   exit(c);
 }
 
+/**
+ * @brief Report names not found in the archive.
+ *
+ * @return Number of missing files.
+ */
 notfound() {
   register i, n;
 
@@ -404,6 +455,11 @@ notfound() {
   return (n);
 }
 
+/**
+ * @brief Determine whether more files remain to process.
+ *
+ * @return Number of remaining file names.
+ */
 morefil() {
   register i, n;
 
@@ -414,6 +470,9 @@ morefil() {
   return (n);
 }
 
+/**
+ * @brief Complete file addition and install the archive.
+ */
 cleanup() {
   register i, f;
 
@@ -433,6 +492,9 @@ cleanup() {
   install();
 }
 
+/**
+ * @brief Finalize and write the new archive.
+ */
 install() {
   register i;
 
@@ -471,6 +533,11 @@ install() {
  * insert the file 'file'
  * into the temporary file
  */
+/**
+ * @brief Insert the specified file into the temporary archive.
+ *
+ * @param f File descriptor of the input file.
+ */
 movefil(f) {
   register char *cp;
   register i;
@@ -488,6 +555,11 @@ movefil(f) {
   close(f);
 }
 
+/**
+ * @brief Stat the named file and return an open descriptor.
+ *
+ * @return File descriptor or -1 on error.
+ */
 stats() {
   register f;
 
@@ -504,6 +576,13 @@ stats() {
 /*
  * copy next file
  * size given in arbuf
+ */
+/**
+ * @brief Copy the next file from fi to fo using the size in arbuf.
+ *
+ * @param fi   Input file descriptor.
+ * @param fo   Output file descriptor.
+ * @param flag Combination of SKIP, IODD, OODD, or HEAD.
  */
 copyfil(fi, fo, flag) {
   register i, o;
@@ -535,6 +614,11 @@ copyfil(fi, fo, flag) {
     phserr();
 }
 
+/**
+ * @brief Read the next file header from the archive.
+ *
+ * @return 0 if a header was read, 1 on end of file.
+ */
 getdir() {
   register i;
 
@@ -553,6 +637,11 @@ getdir() {
   return (0);
 }
 
+/**
+ * @brief Check if the current file name matches any specified patterns.
+ *
+ * @return 1 on match, 0 otherwise.
+ */
 match() {
   register i;
 
@@ -568,6 +657,9 @@ match() {
   return (0);
 }
 
+/**
+ * @brief Handle 'a' or 'b' options for positioning new files.
+ */
 bamatch() {
   register f;
 
@@ -594,8 +686,16 @@ bamatch() {
   }
 }
 
+/**
+ * @brief Report an archive phase error.
+ */
 phserr() { fprintf(stderr, "ar: phase error on %s\n", file); }
 
+/**
+ * @brief Print an operation message when verbose mode is enabled.
+ *
+ * @param c Operation code character.
+ */
 mesg(c) {
 
   if (flg['v' - 'a'])
@@ -603,6 +703,12 @@ mesg(c) {
       printf("%c - %s\n", c, file);
 }
 
+/**
+ * @brief Remove any leading directory components from a path name.
+ *
+ * @param s Input path.
+ * @return Pointer to the base name within s.
+ */
 char *trim(s)
 char *s;
 {
@@ -638,6 +744,9 @@ char *s;
 #define XOTH 01
 #define STXT 01000
 
+/**
+ * @brief Print a verbose listing of the current archive header.
+ */
 longt() {
   register char *cp;
 
@@ -660,6 +769,9 @@ int m9[] = {2, STXT, 't', XOTH, 'x', '-'};
 
 int *m[] = {m1, m2, m3, m4, m5, m6, m7, m8, m9};
 
+/**
+ * @brief Print file mode bits from arbuf.
+ */
 pmode() {
   register int **mp;
 
@@ -667,6 +779,9 @@ pmode() {
     select(*mp++);
 }
 
+/**
+ * @brief Helper for pmode to output permission characters.
+ */
 select(pairp) int *pairp;
 {
   register int n, *ap;
@@ -678,6 +793,9 @@ select(pairp) int *pairp;
   putchar(*ap);
 }
 
+/**
+ * @brief Print a write error message and exit.
+ */
 wrerr() {
   perror("ar write error");
   done(1);

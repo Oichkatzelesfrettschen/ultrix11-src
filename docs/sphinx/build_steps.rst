@@ -18,23 +18,19 @@ systems this can be done via
 Basic Build
 -----------
 
-Run ``make`` from the repository root to build everything:
+Invoke the helper script to compile the default ``x86_64_v1`` target:
 
 .. code-block:: bash
 
-   make
+   ./scripts/build.sh
 
-The ``make`` target invokes ``userland`` and ``kernel`` builds.  To
-build only user programs or the kernel separately, use
-``make userland`` or ``make kernel``.
-
-An ``ARCH`` variable controls the target architecture.  It defaults to
-``pdp11``.  To build the experimental 64-bit kernel, pass
-``ARCH=x86_64_v1`` on the command line:
+To build the classic PDP-11 system instead, set ``ARCH=pdp11``:
 
 .. code-block:: bash
 
-   make ARCH=x86_64_v1
+   ARCH=pdp11 ./scripts/build.sh
+
+The traditional Makefile targets remain available for advanced use.
 
 Cleaning
 --------

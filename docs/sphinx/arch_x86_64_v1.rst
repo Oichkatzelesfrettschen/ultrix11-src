@@ -1,6 +1,6 @@
 Architecture: x86_64 v1
 
-This document outlines the build prerequisites for the experimental
+This document outlines the build prerequisites for the
 ``arch_x86_64_v1`` port, describes the system layout for this target and
 summarizes how it differs from the classic PDP-11 environment.
 
@@ -38,8 +38,8 @@ context and links to emulator notes.
 
 x86_64_v1 Architecture
 
-The ``sys/arch/x86_64_v1`` directory contains experimental sources for
-bringing Ultrix-11 to a 64-bit environment.  The code is intentionally
+The ``sys/arch/x86_64_v1`` directory contains sources for bringing
+Ultrix-11 to a 64-bit environment.  The code is intentionally
 minimal and currently provides:
 
 * ``boot.s`` – a very small bootstrap that jumps to ``kernel_main``.
