@@ -60,9 +60,14 @@ int main(int argc, char **argv) {
   exit(status);
 }
 
-isnumber(s) register char *s;
-{
-  while (isdigit(*s))
+/**
+ * @brief Determine if a string is composed entirely of digits.
+ *
+ * @param s String to examine.
+ * @return 1 if @p s contains only digits, otherwise 0.
+ */
+static int isnumber(const char *s) {
+  while (isdigit((unsigned char)*s))
     s++;
-  return ((*s == '\0') ? 1 : 0);
+  return (*s == '\0') ? 1 : 0;
 }
