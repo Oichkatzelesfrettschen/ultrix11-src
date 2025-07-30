@@ -6,7 +6,9 @@ CFLAGS ?= -O2 -Wall -Wextra -Werror
 # Target architecture used for the build
 # Defaults to x86_64_v1 to match the available implementation. Override
 # on the command line for other architectures.
-ARCH ?= x86_64_v1
+# Defaults to a modern x86_64 variant. Override on the
+# command line for other architectures, e.g. `ARCH=pdp11`.
+=ARCH ?= x86_64_v1
 
 # Assembler used for assembly sources
 AS ?= as
