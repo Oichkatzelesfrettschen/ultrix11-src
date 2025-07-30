@@ -63,6 +63,7 @@ static void update_term(struct tbuf *tp, int use_midnight);
 static int among(int idx);
 static void newday(void);
 static void print_date(void);
+static int parse_options(int argc, char **argv);
 
 /**
  * @brief Entry point for the accounting utility.
@@ -72,25 +73,14 @@ static void print_date(void);
  * @return EXIT_SUCCESS on success, EXIT_FAILURE on error.
  */
 int main(int argc, char **argv) {
-  int idx = 1;
   FILE *wf;
 
   wtmp = WTMP_FILE;
-  while (idx < argc && argv[idx][0] == '-') {
-    if (strcmp(argv[idx], "-d") == 0) {
-      byday = 1;
-    } else if (strcmp(argv[idx], "-p") == 0) {
-      pflag = 1;
-    } else if (strcmp(argv[idx], "-w") == 0 && idx + 1 < argc) {
-      wtmp = argv[++idx];
-    } else {
-      fprintf(stderr, "Usage: acct [ -w wtmp ] [ -d ] [ -p ] [ people ]\n");
-      return EXIT_FAILURE;
-    }
-    idx++;
-  }
-  pcount = argc - idx;
-  pptr = &argv[idx];
+  int first_arg = parse_options(argc, argv);
+  if (first_arg < 0)
+    return EXIT_FAILURE;
+  pcount = argc - first_arg;
+  pptr = &argv[first_arg];
 
   wf = fopen(wtmp, "r");
   if (wf == NULL) {
@@ -290,4 +280,29 @@ static void print_date(void) {
   time_t x = midnight - 1;
   char *s = ctime(&x);
   printf("%.6s", s + 4);
+}
+
+/**
+ * @brief Parse command line options and initialize global settings.
+ *
+ * @param argc Number of command line arguments.
+ * @param argv Argument vector.
+ * @return Index of the first non-option argument or -1 on error.
+ */
+static int parse_options(int argc, char **argv) {
+  int idx = 1;
+  while (idx < argc && argv[idx][0] == '-') {
+    if (strcmp(argv[idx], "-d") == 0) {
+      byday = 1;
+    } else if (strcmp(argv[idx], "-p") == 0) {
+      pflag = 1;
+    } else if (strcmp(argv[idx], "-w") == 0 && idx + 1 < argc) {
+      wtmp = argv[++idx];
+    } else {
+      fprintf(stderr, "Usage: acct [ -w wtmp ] [ -d ] [ -p ] [ people ]\n");
+      return -1;
+    }
+    idx++;
+  }
+  return idx;
 }

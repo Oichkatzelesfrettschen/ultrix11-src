@@ -18,23 +18,30 @@ systems this can be done via
 Basic Build
 -----------
 
-Run ``make`` from the repository root to build everything:
+Run ``make`` from the repository root to build everything or invoke the
+``scripts/build.sh`` helper which configures common optimization modes.
 
 .. code-block:: bash
 
    make
+
+For example, a high optimization build can be run with:
+
+.. code-block:: bash
+
+   scripts/build.sh performance
 
 The ``make`` target invokes ``userland`` and ``kernel`` builds.  To
 build only user programs or the kernel separately, use
 ``make userland`` or ``make kernel``.
 
 An ``ARCH`` variable controls the target architecture.  It defaults to
-``pdp11``.  To build the experimental 64-bit kernel, pass
-``ARCH=x86_64_v1`` on the command line:
+``x86_64_v1``.  To target other platforms, pass the desired architecture
+on the command line:
 
 .. code-block:: bash
 
-   make ARCH=x86_64_v1
+   make ARCH=pdp11
 
 Cleaning
 --------

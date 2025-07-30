@@ -4,6 +4,9 @@ project(ultrix11 C ASM)
 # Option for target architecture. Matches the Makefile variable.
 set(ARCH "x86_64_v1" CACHE STRING "Target architecture")
 
+# Global compile warnings for all targets
+add_compile_options(-Wall -Wextra -Werror)
+
 # Export compile settings from the environment when invoked via Makefile
 if(DEFINED ENV{CC})
   set(CMAKE_C_COMPILER $ENV{CC} CACHE FILEPATH "" FORCE)
