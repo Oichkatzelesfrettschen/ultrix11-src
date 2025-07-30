@@ -153,6 +153,14 @@ int main(int argc, char **argv) {
   done(notfound());
 }
 
+/**
+ * @brief Set the archive command to execute.
+ *
+ * Only one command may be specified on the command line.  This
+ * function stores the function pointer for later invocation.
+ *
+ * @param fun Function implementing the selected command.
+ */
 setcom(fun) int (*fun)();
 {
 
@@ -165,6 +173,12 @@ setcom(fun) int (*fun)();
 
 /**
  * @brief Replace or insert files into the archive.
+ *
+ * Iterates over the file list stored in @c namv and either
+ * adds new entries or replaces existing ones.  The flags in
+ * @c flg determine how files are processed.
+ *
+ * @return void
  */
 rcmd() {
   register f;
@@ -199,6 +213,12 @@ rcmd() {
 
 /**
  * @brief Delete files from the archive.
+ *
+ * Removes each file listed in @c namv from the archive if
+ * it exists.  Non-matching files are copied to the temporary
+ * archive unchanged.
+ *
+ * @return void
  */
 dcmd() {
 
@@ -219,6 +239,12 @@ dcmd() {
 
 /**
  * @brief Extract files from the archive.
+ *
+ * Creates each matching file on disk with the
+ * archived metadata and copies its contents out of the
+ * archive.
+ *
+ * @return void
  */
 xcmd() {
   register f;
@@ -247,6 +273,11 @@ xcmd() {
 
 /**
  * @brief Print files from the archive to standard output.
+ *
+ * Extracts files to stdout, optionally printing a
+ * header when verbose mode is active.
+ *
+ * @return void
  */
 pcmd() {
 
@@ -267,6 +298,11 @@ pcmd() {
 
 /**
  * @brief Move files within the archive.
+ *
+ * Reorders files based on the position arguments
+ * specified with `a` or `b` options.
+ *
+ * @return void
  */
 mcmd() {
 
@@ -295,6 +331,11 @@ mcmd() {
 
 /**
  * @brief List archive contents.
+ *
+ * Displays each archive member name, optionally in
+ * verbose format.
+ *
+ * @return void
  */
 tcmd() {
 
@@ -312,6 +353,11 @@ tcmd() {
 
 /**
  * @brief Quick append files to the archive without checks.
+ *
+ * Appends files directly to the archive without verifying
+ * whether they already exist.
+ *
+ * @return void
  */
 qcmd() {
   register i, f;
@@ -343,6 +389,11 @@ qcmd() {
 
 /**
  * @brief Initialize temporary files for archive operations.
+ *
+ * Creates one or more temporary files used during
+ * modification of the archive.
+ *
+ * @return void
  */
 init() {
   static mbuf = ARMAG;
@@ -378,6 +429,12 @@ getaf() {
 
 /**
  * @brief Open the archive for writing in quick append mode.
+ *
+ * Creates the archive if it does not already exist and
+ * verifies that the file header contains the proper
+ * archive magic.
+ *
+ * @return void
  */
 getqf() {
   int mbuf;
@@ -402,6 +459,11 @@ getqf() {
 
 /**
  * @brief Display usage information and exit.
+ *
+ * Prints the valid command line options and terminates the
+ * program.
+ *
+ * @return void
  */
 usage() {
   printf("usage: ar [%s][%s] archive files ...\n", opt, man);
@@ -410,6 +472,10 @@ usage() {
 
 /**
  * @brief Abort when the archive does not exist.
+ *
+ * Prints an error message and terminates the program.
+ *
+ * @return void
  */
 noar() {
 
@@ -419,6 +485,8 @@ noar() {
 
 /**
  * @brief Signal handler that terminates the program.
+ *
+ * @return void
  */
 sigdone() { done(100); }
 
@@ -426,6 +494,7 @@ sigdone() { done(100); }
  * @brief Clean up temporary files and exit.
  *
  * @param c Exit code.
+ * @return void
  */
 done(c) {
 
@@ -472,6 +541,11 @@ morefil() {
 
 /**
  * @brief Complete file addition and install the archive.
+ *
+ * Processes files queued for insertion and then writes the
+ * updated archive to disk.
+ *
+ * @return void
  */
 cleanup() {
   register i, f;
@@ -494,6 +568,11 @@ cleanup() {
 
 /**
  * @brief Finalize and write the new archive.
+ *
+ * Copies all temporary data to the output archive file and
+ * cleans up signal handlers.
+ *
+ * @return void
  */
 install() {
   register i;
@@ -688,6 +767,11 @@ bamatch() {
 
 /**
  * @brief Report an archive phase error.
+ *
+ * This occurs when the archive structure is not as
+ * expected during copying.
+ *
+ * @return void
  */
 phserr() { fprintf(stderr, "ar: phase error on %s\n", file); }
 
@@ -695,6 +779,7 @@ phserr() { fprintf(stderr, "ar: phase error on %s\n", file); }
  * @brief Print an operation message when verbose mode is enabled.
  *
  * @param c Operation code character.
+ * @return void
  */
 mesg(c) {
 
@@ -746,6 +831,8 @@ char *s;
 
 /**
  * @brief Print a verbose listing of the current archive header.
+ *
+ * @return void
  */
 longt() {
   register char *cp;
@@ -771,6 +858,8 @@ int *m[] = {m1, m2, m3, m4, m5, m6, m7, m8, m9};
 
 /**
  * @brief Print file mode bits from arbuf.
+ *
+ * @return void
  */
 pmode() {
   register int **mp;
@@ -781,6 +870,9 @@ pmode() {
 
 /**
  * @brief Helper for pmode to output permission characters.
+ *
+ * @param pairp Permission mapping table entry.
+ * @return void
  */
 select(pairp) int *pairp;
 {
@@ -795,6 +887,8 @@ select(pairp) int *pairp;
 
 /**
  * @brief Print a write error message and exit.
+ *
+ * @return void
  */
 wrerr() {
   perror("ar write error");

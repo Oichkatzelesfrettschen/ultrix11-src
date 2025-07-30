@@ -3,6 +3,13 @@ build/
 build*/
 builds/
 */CMakeFiles/
+# CMake generated files
+CMakeCache.txt
+cmake_install.cmake
+CMakeScripts/
+*/CMakeCache.txt
+*/cmake_install.cmake
+*/CMakeScripts/
 # Doxygen output
 docs/doxygen/
 # Sphinx HTML build

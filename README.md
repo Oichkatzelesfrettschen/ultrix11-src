@@ -18,7 +18,7 @@ The Ultrix-11 3.1 source code.
 The repository uses a unified Makefile system. A helper script
 `scripts/build.sh` simplifies invoking common build types. The default
 architecture is `x86_64_v1`. Run the script without arguments for a standard
-build:
+build. Use `-j <jobs>` to run multiple make jobs in parallel:
 
 ```bash
 ./scripts/build.sh
