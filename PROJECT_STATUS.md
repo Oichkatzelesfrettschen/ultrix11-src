@@ -8,3 +8,6 @@ Generated directories and files are ignored via `.gitignore`:
 - `docs/doxygen/` and `docs/sphinx/_build/`
 
 Developers should run `scripts/build.sh` to compile the project.
+## Recent Cleanup
+- Removed temporary `build/` directory after compilation.
+- Deleted generated documentation under `docs/doxygen/` and `docs/sphinx/_build/`.
