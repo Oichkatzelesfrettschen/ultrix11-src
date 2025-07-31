@@ -6,39 +6,42 @@
  **********************************************************************/
 
 /* SCCSID: @(#)clrtobot.c	3.0	4/22/86 */
-# include	"curses.ext"
+#include "curses.ext"
 
 /*
  *	This routine erases everything on the window.
  *
  * 1/26/81 (Berkeley) @(#)clrtobot.c	1.1
  */
-wclrtobot(win)
-reg WINDOW	*win; {
+/**
+ * @brief Clear from the current line to the bottom of the window.
+ *
+ * @param win Window to modify.
+ */
+void wclrtobot(WINDOW *win)
 
-	reg int		y;
-	reg char	*sp, *end, *maxx;
-	reg int		startx, minx;
+    reg int y;
+reg char *sp, *end, *maxx;
+reg int startx, minx;
 
-	startx = win->_curx;
-	for (y = win->_cury; y < win->_maxy; y++) {
-		minx = _NOCHANGE;
-		end = &win->_y[y][win->_maxx];
-		for (sp = &win->_y[y][startx]; sp < end; sp++)
-			if (*sp != ' ') {
-				maxx = sp;
-				if (minx == _NOCHANGE)
-					minx = sp - win->_y[y];
-				*sp = ' ';
-			}
-		if (minx != _NOCHANGE) {
-			if (win->_firstch[y] > minx
-			     || win->_firstch[y] == _NOCHANGE)
-				win->_firstch[y] = minx;
-			if (win->_lastch[y] < maxx - win->_y[y])
-				win->_lastch[y] = maxx - win->_y[y];
-		}
-		startx = 0;
-	}
-	win->_curx = win->_cury = 0;
+startx = win->_curx;
+for (y = win->_cury; y < win->_maxy; y++) {
+  minx = _NOCHANGE;
+  end = &win->_y[y][win->_maxx];
+  for (sp = &win->_y[y][startx]; sp < end; sp++)
+    if (*sp != ' ') {
+      maxx = sp;
+      if (minx == _NOCHANGE)
+        minx = sp - win->_y[y];
+      *sp = ' ';
+    }
+  if (minx != _NOCHANGE) {
+    if (win->_firstch[y] > minx || win->_firstch[y] == _NOCHANGE)
+      win->_firstch[y] = minx;
+    if (win->_lastch[y] < maxx - win->_y[y])
+      win->_lastch[y] = maxx - win->_y[y];
+  }
+  startx = 0;
+}
+win->_curx = win->_cury = 0;
 }

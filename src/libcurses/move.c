@@ -6,23 +6,29 @@
  **********************************************************************/
 
 /* SCCSID: @(#)move.c	3.0	4/22/86 */
-# include	"curses.ext"
+#include "curses.ext"
 
 /*
  *	This routine moves the cursor to the given point
  *
  * 1/26/81 (Berkeley) @(#)move.c	1.1
  */
-wmove(win, y, x)
-reg WINDOW	*win;
-reg int		y, x; {
+/**
+ * @brief Move the cursor in a window.
+ *
+ * @param win Window to operate on.
+ * @param y   Row index.
+ * @param x   Column index.
+ * @return OK on success, ERR on failure.
+ */
+int wmove(WINDOW *win, int y, int x)
 
-# ifdef DEBUG
-	fprintf(outf, "MOVE to (%d, %d)\n", y, x);
-# endif
-	if (x >= win->_maxx || y >= win->_maxy)
-		return ERR;
-	win->_curx = x;
-	win->_cury = y;
-	return OK;
+#ifdef DEBUG
+    fprintf(outf, "MOVE to (%d, %d)\n", y, x);
+#endif
+if (x >= win->_maxx || y >= win->_maxy)
+  return ERR;
+win->_curx = x;
+win->_cury = y;
+return OK;
 }

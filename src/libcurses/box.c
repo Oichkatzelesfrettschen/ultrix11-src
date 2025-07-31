@@ -6,7 +6,7 @@
  **********************************************************************/
 
 /* SCCSID: @(#)box.c	3.0	4/22/86 */
-# include	"curses.ext"
+#include "curses.ext"
 
 /*
  *	This routine draws a box around the given window with "vert"
@@ -14,25 +14,32 @@
  *
  * @(#) 2/16/82 (Berkeley) box.c	1.2
  */
-box(win, vert, hor)
-reg WINDOW	*win;
-char		vert, hor; {
+/**
+ * @brief Draw a box around a window.
+ *
+ * Uses the provided characters for the vertical and horizontal
+ * portions of the border.
+ *
+ * @param win  Window to draw the border on.
+ * @param vert Vertical border character.
+ * @param hor  Horizontal border character.
+ */
+void box(WINDOW *win, char vert, char hor)
 
-	reg int		i;
-	reg int		endy, endx;
-	reg char	*fp, *lp;
+    reg int i;
+reg int endy, endx;
+reg char *fp, *lp;
 
-	endx = win->_maxx;
-	endy = win->_maxy - 1;
-	fp = win->_y[0];
-	lp = win->_y[endy];
-	for (i = 0; i < endx; i++)
-		fp[i] = lp[i] = hor;
-	endx--;
-	for (i = 0; i <= endy; i++)
-		win->_y[i][0] = (win->_y[i][endx] = vert);
-	if (!win->_scroll && (win->_flags&_SCROLLWIN))
-		fp[0] = fp[endx] = lp[0] = lp[endx] = ' ';
-	touchwin(win);
+endx = win->_maxx;
+endy = win->_maxy - 1;
+fp = win->_y[0];
+lp = win->_y[endy];
+for (i = 0; i < endx; i++)
+  fp[i] = lp[i] = hor;
+endx--;
+for (i = 0; i <= endy; i++)
+  win->_y[i][0] = (win->_y[i][endx] = vert);
+if (!win->_scroll && (win->_flags & _SCROLLWIN))
+  fp[0] = fp[endx] = lp[0] = lp[endx] = ' ';
+touchwin(win);
 }
-

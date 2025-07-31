@@ -2,12 +2,12 @@
 build/
 build*/
 builds/
-*/CMakeFiles/
-*/CMakeScripts/
-CMakeCache.txt
-cmake_install.cmake
+**/CMakeFiles/
+**/CMakeScripts/
+**/CMakeCache.txt
+**/cmake_install.cmake
 # Generated ninja and makefiles
-build.ninja
+**/build.ninja
 # Doxygen output
 docs/doxygen/
 # Sphinx HTML build

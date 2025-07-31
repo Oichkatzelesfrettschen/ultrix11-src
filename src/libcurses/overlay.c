@@ -23,63 +23,69 @@
  * Organization: Mining&Metal. Eng; Univ of Qld; Brisbane; Aus
  */
 
-# include	"curses.ext"
-# include	<ctype.h>
+#include "curses.ext"
+#include <ctype.h>
 
-# define	min(a,b)	(a < b ? a : b)
-# define	max(a,b)	(a > b ? a : b)
+#define min(a, b) (a < b ? a : b)
+#define max(a, b) (a > b ? a : b)
 
 /*
  * find the maximum line and column of a window in screen coords
  */
-#define		MAX_LINE(win)	(win->_maxy + win->_begy)
-#define		MAX_COL(win)	(win->_maxx + win->_begx)
+#define MAX_LINE(win) (win->_maxy + win->_begy)
+#define MAX_COL(win) (win->_maxx + win->_begx)
 
 /*
  *  This routine writes win1 on win2 non-destructively.
  *  Rewritten CJD UQ Min & Met Eng, March 85
  */
-overlay(win1, win2)
-reg WINDOW *win1, *win2;
-{
-	reg char	*cp, *end;
-	reg int 	x2, i,
-			endline, ytop,  y1,  y2,
-			ncols,	xleft, x1start, x2start;
-# ifdef DEBUG
-	fprintf(outf, "OVERLAY(%0.2o, %0.2o);\n", win1, win2);
-# endif
+/**
+ * @brief Non-destructively write one window over another.
+ *
+ * Each non-space character from @p win1 is copied onto @p win2.
+ *
+ * @param win1 Source window.
+ * @param win2 Destination window.
+ * @return int OK on success.
+ */
+int overlay(WINDOW *win1, WINDOW *win2) {
+  reg char *cp, *end;
+  reg int x2, i, endline, ytop, y1, y2, ncols, xleft, x1start, x2start;
+#ifdef DEBUG
+  fprintf(outf, "OVERLAY(%0.2o, %0.2o);\n", win1, win2);
+#endif
 
-	/*
-	 * ytop and xleft are starting line and col in terms
-	 * of screen coordinates
-	 */
-	ytop = max( win1->_begy, win2->_begy );
-	xleft = max( win1->_begx, win2->_begx );
+  /*
+   * ytop and xleft are starting line and col in terms
+   * of screen coordinates
+   */
+  ytop = max(win1->_begy, win2->_begy);
+  xleft = max(win1->_begx, win2->_begx);
 
-	/* last line of  window 1 to look at */
-	endline = min( MAX_LINE(win1),  MAX_LINE(win2) ) - win1->_begy;
-	ncols	= min( MAX_COL(win1),  MAX_COL(win2) ) - xleft;
+  /* last line of  window 1 to look at */
+  endline = min(MAX_LINE(win1), MAX_LINE(win2)) - win1->_begy;
+  ncols = min(MAX_COL(win1), MAX_COL(win2)) - xleft;
 
-	/*
-	 * y1 and x1start are starting row and line relative to window 1
-	 */
-	y1 = ytop - win1->_begy;
-	x1start = xleft - win1->_begx;
-	y2 = ytop - win2->_begy;
-	x2start = xleft - win2->_begx;
+  /*
+   * y1 and x1start are starting row and line relative to window 1
+   */
+  y1 = ytop - win1->_begy;
+  x1start = xleft - win1->_begx;
+  y2 = ytop - win2->_begy;
+  x2start = xleft - win2->_begx;
 
-	while ( y1 < endline ) {
-		cp = &win1->_y[y1++][x1start];
-		end = cp + ncols;
-		x2 = x2start;
-		for ( ; cp < end; cp++ ) {
-			if ( !isspace( *cp ) ) {
-				wmove( win2, y2, x2 );
-				waddch( win2, *cp );
-			}
-			x2++;
-		}
-		y2++;
-	}
+  while (y1 < endline) {
+    cp = &win1->_y[y1++][x1start];
+    end = cp + ncols;
+    x2 = x2start;
+    for (; cp < end; cp++) {
+      if (!isspace(*cp)) {
+        wmove(win2, y2, x2);
+        waddch(win2, *cp);
+      }
+      x2++;
+    }
+    y2++;
+  }
+  return OK;
 }

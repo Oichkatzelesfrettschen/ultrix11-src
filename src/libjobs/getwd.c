@@ -11,76 +11,85 @@
 /*
  * Getwd
  */
-#include	<sys/param.h>
-#include	<sys/stat.h>
-#include	<sys/dir.h>
+#include <sys/dir.h>
+#include <sys/param.h>
+#include <sys/stat.h>
 
-#define	dot	"."
-#define	dotdot	".."
+#define dot "."
+#define dotdot ".."
 
-static	char	*name;
+static char *name;
 
-static	int	file;
-static	int	off	= -1;
-static	struct	stat	d, dd;
-static	struct	direct	dir;
+static int file;
+static int off = -1;
+static struct stat d, dd;
+static struct direct dir;
 
-char *
-getwd(np)
-char *np;
-{
-	int rdev, rino;
+/**
+ * @brief Retrieve the current working directory.
+ *
+ * This implementation walks up the directory tree using
+ * only system calls available on early UNIX systems.
+ *
+ * @param np Buffer to store the current directory path.
+ * @return char* Pointer to @p np on success or NULL on failure.
+ */
+char *getwd(char *np) {
+  int rdev, rino;
 
-	*np++ = '/';
-	name = np;
-	stat("/", &d);
-	rdev = d.st_dev;
-	rino = d.st_ino;
-	for (;;) {
-		stat(dot, &d);
-		if (d.st_ino==rino && d.st_dev==rdev)
-			goto done;
-		if ((file = open(dotdot,0)) < 0)
-			return ((char *) NULL);
-		fstat(file, &dd);
-		chdir(dotdot);
-		if(d.st_dev == dd.st_dev) {
-			if(d.st_ino == dd.st_ino)
-				goto done;
-			do
-				if (read(file, (char *)&dir, sizeof(dir)) < sizeof(dir))
-					return ((char *) NULL);
-			while (dir.d_ino != d.st_ino);
-		}
-		else do {
-				if(read(file, (char *)&dir, sizeof(dir)) < sizeof(dir))
-					return ((char *) NULL);
-				stat(dir.d_name, &dd);
-			} while(dd.st_ino != d.st_ino || dd.st_dev != d.st_dev);
-		close(file);
-		cat();
-	}
+  *np++ = '/';
+  name = np;
+  stat("/", &d);
+  rdev = d.st_dev;
+  rino = d.st_ino;
+  for (;;) {
+    stat(dot, &d);
+    if (d.st_ino == rino && d.st_dev == rdev)
+      goto done;
+    if ((file = open(dotdot, 0)) < 0)
+      return ((char *)NULL);
+    fstat(file, &dd);
+    chdir(dotdot);
+    if (d.st_dev == dd.st_dev) {
+      if (d.st_ino == dd.st_ino)
+        goto done;
+      do
+        if (read(file, (char *)&dir, sizeof(dir)) < sizeof(dir))
+          return ((char *)NULL);
+      while (dir.d_ino != d.st_ino);
+    } else
+      do {
+        if (read(file, (char *)&dir, sizeof(dir)) < sizeof(dir))
+          return ((char *)NULL);
+        stat(dir.d_name, &dd);
+      } while (dd.st_ino != d.st_ino || dd.st_dev != d.st_dev);
+    close(file);
+    cat();
+  }
 done:
-	name--;
-	if (chdir(name) < 0)
-		return ((char *) NULL);
-	return (name);
+  name--;
+  if (chdir(name) < 0)
+    return ((char *)NULL);
+  return (name);
 }
 
-cat()
-{
-	register i, j;
+/**
+ * @brief Concatenate the directory name onto the buffer.
+ */
+static void cat(void) {
+  register int i, j;
 
-	i = -1;
-	while (dir.d_name[++i] != 0);
-	if ((off+i+2) > 1024-1)
-		return;
-	for(j=off+1; j>=0; --j)
-		name[j+i+1] = name[j];
-	if (off >= 0)
-		name[i] = '/';
-	off=i+off+1;
-	name[off] = 0;
-	for(--i; i>=0; --i)
-		name[i] = dir.d_name[i];
+  i = -1;
+  while (dir.d_name[++i] != 0)
+    ;
+  if ((off + i + 2) > 1024 - 1)
+    return;
+  for (j = off + 1; j >= 0; --j)
+    name[j + i + 1] = name[j];
+  if (off >= 0)
+    name[i] = '/';
+  off = i + off + 1;
+  name[off] = 0;
+  for (--i; i >= 0; --i)
+    name[i] = dir.d_name[i];
 }

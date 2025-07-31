@@ -14,15 +14,15 @@
  * a program to test overlay/overwrite routines in libcurses
  * the program should draw the following pattern in 4 places on the screen:
 
-	 + + + + + + + + + +
-	 + wwwwwwwwww+ + + +
-	 + w        w+ + + +
-	 + w    llllllllll +
-	 + w    l   w+ + l +
-	 + wwwwwlwwww+ + l +
-	 + + + +l+ + + + l +
-	 + + + +llllllllll +
-	 + + + + + + + + + +
+         + + + + + + + + + +
+         + wwwwwwwwww+ + + +
+         + w        w+ + + +
+         + w    llllllllll +
+         + w    l   w+ + l +
+         + wwwwwlwwww+ + l +
+         + + + +l+ + + + l +
+         + + + +llllllllll +
+         + + + + + + + + + +
  *
  * and finally in the centre it should draw another pattern with the 'w'
  * and 'l' windows overlapping opposite corners of the base
@@ -32,60 +32,62 @@
  * Organization: Mining&Metal. Eng; Univ of Qld; Brisbane; Aus
  */
 
-#include	<stdio.h>
-#include	<curses.h>
+#include <curses.h>
+#include <stdio.h>
 
+WINDOW *Wbase, *Woverw, *Woverl;
+/**
+ * @brief Simple test program for overlay and overwrite functions.
+ */
 
-WINDOW	*Wbase,
-	*Woverw,
-	*Woverl;
-
-main( ac, av )
-	char	**av;
-{
-	initscr();
-	normal_pattern( 0, 0 );
-	normal_pattern( 10, 0 );
-	normal_pattern( 0, 50 );
-	normal_pattern( 10, 50 );
-		/* now test when windows extend beyond base window */
-	Wbase = newwin( 9, 19, 5, 25 );
-	Woverw = newwin( 5, 10, 3, 22);
-	Woverl = newwin( 5, 10, 11, 37);
-	draw_pattern();
-	mvcur( 0, COLS-1, LINES-1, 0);
+int main(int ac, char **av) {
+  initscr();
+  normal_pattern(0, 0);
+  normal_pattern(10, 0);
+  normal_pattern(0, 50);
+  normal_pattern(10, 50);
+  /* now test when windows extend beyond base window */
+  Wbase = newwin(9, 19, 5, 25);
+  Woverw = newwin(5, 10, 3, 22);
+  Woverl = newwin(5, 10, 11, 37);
+  draw_pattern();
+  mvcur(0, COLS - 1, LINES - 1, 0);
 }
 
-	/*
-	 * setup windows to draw patterns completely within base area
-	 */
-normal_pattern( base_y_begin, base_x_begin )
-	int	base_y_begin, base_x_begin;
+/*
+ * setup windows to draw patterns completely within base area
+/**
+* @brief Draw a test pattern within given bounds.
+*/
+*/ void normal_pattern(int base_y_begin, int base_x_begin) int base_y_begin,
+    base_x_begin;
 {
-	if ( base_y_begin + 9 >= LINES  || base_x_begin + 19 >= COLS ) {
-		fputs( "WON'T FIT\n", stderr);
-		exit(1);
-	}
-	Wbase = newwin( 9, 19, base_y_begin, base_x_begin );
-	Woverw = newwin( 5, 10, base_y_begin + 1, base_x_begin + 2);
-	Woverl = newwin( 5, 10, base_y_begin + 3, base_x_begin + 7);
-	draw_pattern();
+  if (base_y_begin + 9 >= LINES || base_x_begin + 19 >= COLS) {
+    fputs("WON'T FIT\n", stderr);
+    exit(1);
+  }
+  Wbase = newwin(9, 19, base_y_begin, base_x_begin);
+  Woverw = newwin(5, 10, base_y_begin + 1, base_x_begin + 2);
+  Woverl = newwin(5, 10, base_y_begin + 3, base_x_begin + 7);
+  draw_pattern();
 }
+/**
+ * @brief Draw the overlapping window test pattern.
+ */
 
-draw_pattern( )
-{
-	register	int	line;
+void draw_pattern(void) {
+  register int line;
 
-	for( line=0 ; line < 9 ; line++ )
-		mvwaddstr( Wbase, line, 0, "+ + + + + + + + + +");
-	wrefresh(Wbase);
-	box( Woverw, 'w', 'w');
-	box( Woverl, 'l', 'l');
-	overwrite( Woverw, Wbase );
-	wrefresh(Wbase);
-	overlay( Woverl, Wbase );
-	wrefresh(Wbase);
-	delwin( Wbase );
-	delwin( Woverw );
-	delwin( Woverl );
+  for (line = 0; line < 9; line++)
+    mvwaddstr(Wbase, line, 0, "+ + + + + + + + + +");
+  wrefresh(Wbase);
+  box(Woverw, 'w', 'w');
+  box(Woverl, 'l', 'l');
+  overwrite(Woverw, Wbase);
+  wrefresh(Wbase);
+  overlay(Woverl, Wbase);
+  wrefresh(Wbase);
+  delwin(Wbase);
+  delwin(Woverw);
+  delwin(Woverl);
 }
